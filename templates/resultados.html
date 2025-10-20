@@ -3,53 +3,113 @@
 <head>
     <meta charset="UTF-8">
     <title>Resultados Programación 1</title>
+    
     <style>
-        /* Estilos generales de la página */
-        body { font-family: 'Arial', sans-serif; background-color: #00FFFF; padding: 0; margin: 0; }
-        .main-container { max-width: 1200px; margin: 0 auto; padding: 20px; }
-        h1 { text-align: center; color: #005f5f; font-size: 2.5em; margin-bottom: 20px; }
-
-        /* Estilo del contenedor principal de contenido */
-        .panel { background-color: white; border: 4px solid #005f5f; padding: 20px; margin-bottom: 20px; box-shadow: 2px 2px 5px rgba(0,0,0,0.1); }
-
-        /* Diseño de los filtros de Cursos, Tareas y Tipo de Gráfico */
-        .filtros-container { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px; }
-        .filtro-grupo { padding: 10px; }
-        .filtro-grupo h3 { color: #005f5f; margin-top: 0; margin-bottom: 10px; font-size: 1.1em; }
+        /* ============================================== */
+        /* == SECCIÓN 1: ESTILOS GLOBALES Y CONTENEDOR == */
+        /* ============================================== */
         
-        /* Contenedor de botones (GRAFICAR y ACTUALIZAR DATOS) */
+        /* Estilos generales de la página */
+        body { 
+            font-family: 'Arial', sans-serif; /* TIPO Y FUENTE DE LETRA */
+            /*background-color: #00FFFF; /* COLOR DE FONDO DE LA PÁGINA (CYAN CLARO) */
+            background-image: url('https://png.pngtree.com/png-vector/20220727/ourmid/pngtree-sky-blue-background-web-flesh-presentation-vector-png-image_6354792.jpg'); 
+            background-size: cover; /* Ajusta la imagen para cubrir todo el fondo */
+            background-repeat: no-repeat; /* Evita que la imagen se repita */
+            background-attachment: fixed; /* Mantiene la imagen fija al desplazarse */
+            background-color: #00FFFF; /* Color de respaldo si la imagen falla o tarda en cargar */
+            padding: 0; 
+            margin: 0; 
+        }
+        
+        /* Contenedor principal que centra todo el contenido */
+        .main-container { 
+            max-width: 1200px; /* ANCHO MÁXIMO DEL CONTENIDO */
+            margin: 0 auto; 
+            padding: 20px; 
+        }
+        
+        /* Estilo del TÍTULO principal (RESULTADOS PROGRAMACION 1) */
+        h1 { 
+            text-align: center; 
+            color: #111111; /* COLOR DEL TEXTO DEL TÍTULO */
+            font-size: 2.5em; /* TAMAÑO DE LETRA DEL TÍTULO */
+            margin-bottom: 20px; 
+        }
+
+        /* Estilo del contenedor principal de contenido (Cajas blancas de filtros y resultados) */
+        .panel { 
+            background-color: white; /* COLOR DE FONDO DE LOS PANELES */
+            border: 4px solid #0f0f0f; /* COLOR Y GROSOR DEL BORDE DE LOS PANELES */
+            padding: 20px; 
+            margin-bottom: 20px; 
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.1); 
+        }
+
+        /* ============================================== */
+        /* == SECCIÓN 2: ESTILOS DE FILTROS Y BOTONES == */
+        /* ============================================== */
+
+        /* Diseño del contenedor de los filtros (Cursos, Tareas, Tipo de Gráfico) */
+        .filtros-container { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: flex-start; 
+            margin-bottom: 15px; 
+        }
+        
+        /* Estilos aplicados a cada grupo de filtros */
+        .filtro-grupo { 
+            padding: 10px; 
+        }
+        
+        /* Estilo del subtítulo de cada grupo de filtros (Ej: "CURSOS:", "TAREAS:") */
+        .filtro-grupo h3 { 
+            color: #005f5f; /* COLOR DEL TEXTO DEL SUBTÍTULO */
+            margin-top: 0; 
+            margin-bottom: 10px; 
+            font-size: 1.1em; 
+        }
+        
+        /* Contenedor de los botones principales (GRAFICAR y ACTUALIZAR DATOS) */
         .btn-actions { 
             display: flex; 
             gap: 10px; 
             margin-top: 20px;
         }
         
-        /* Estilos para el botón de enviar formulario */
+        /* Estilos comunes para los botones GRAFICAR y ACTUALIZAR DATOS */
         .submit-btn, .update-btn { 
             padding: 10px; 
             font-weight: bold; 
-            border: 2px solid #005f5f; 
+            border: 2px solid #0a0a0a; /* COLOR DEL BORDE DEL BOTÓN */
             cursor: pointer;
-            width: 50%; 
+            width: 50%; /* HACE QUE AMBOS BOTONES MIDAN LA MITAD DEL ESPACIO */
             box-sizing: border-box;
+            font-size: 1.1em; /* Ejemplo: 1.0em es el tamaño normal. Usa 1.2em para más grande, o 0.8em para más pequeño. */
         }
 
+        /* Estilo específico para el botón GRAFICAR */
         .submit-btn { 
-            background-color: #c0c0c0; 
+            background-color: #04f84d; /* COLOR DE FONDO DEL BOTÓN GRAFICAR (GRIS CLARO) */
         }
         
-        /* Estilos para el botón de actualizar datos (limpiar sesión) */
+        /* Estilos específico para el botón ACTUALIZAR DATOS (limpiar sesión) */
         .update-btn { 
-            background-color: #e0e0e0; 
+            background-color: #f8a203; /* COLOR DE FONDO DEL BOTÓN ACTUALIZAR DATOS (GRIS MÁS CLARO) */
             text-align: center; 
             text-decoration: none; 
             color: inherit; 
             line-height: normal; 
         }
 
-        /* Contenedor del Gráfico (para visualización) */
+        /* ============================================== */
+        /* == SECCIÓN 3: ESTILOS DEL GRÁFICO Y RESULTADOS == */
+        /* ============================================== */
+
+        /* Contenedor del Gráfico (el recuadro que contiene el gráfico Plotly) */
         .grafico-container { 
-            background-color: #e0e0e0; 
+            background-color: #e0e0e0; /* COLOR DE FONDO DEL RECUADRO DEL GRÁFICO */
             border: 2px solid #aaa; 
             padding: 10px; 
             min-height: 400px; 
@@ -62,40 +122,45 @@
             padding-top: 15px;
             border-top: 1px solid #ccc;
         }
+        
         /* Contenedor para agrupar indicadores por Tarea */
         .indicador-tarea-group {
             margin-top: 20px;
             padding-top: 10px;
-            border-top: 2px solid #005f5f;
+            border-top: 2px solid #005f5f; /* LÍNEA SEPARADORA ENTRE TAREAS */
         }
 
-        /* Estilos de la barra de progreso */
+        /* Estilos de la barra de progreso (la línea completa con etiqueta) */
         .indicador { 
             display: flex; 
             align-items: center; 
             margin-bottom: 10px; 
             font-size: 0.9em;
         }
+        
+        /* Etiqueta del indicador (Ej: "Curso 1-2:") */
         .indicador-label { 
-            min-width: 250px; 
+            min-width: 250px; /* ANCHO MÍNIMO DE LA ETIQUETA */
             font-weight: bold;
         }
-        /* Contenedor de la barra de progreso (el fondo gris) */
+        
+        /* Contenedor de la barra de progreso (el fondo gris de la barra) */
         .progress-bar-bg { 
-            width: 70%; /* ANCHO EXTENDIDO para que el progreso se vea más largo */
-            max-width: 700px; /* Limite opcional para pantallas grandes */
+            width: 70%; /* ANCHO DE LA BARRA COMPLETA */
+            max-width: 700px; 
             background-color: #f0f0f0; 
-            border: 1px solid #999; 
+            border: 1px solid #070707; 
             height: 20px; 
             display: flex; 
             align-items: center;
         }
-        /* Barra de progreso real (el color) */
+        
+        /* Barra de progreso real (el color que indica el promedio) */
         .progress-bar { 
             height: 100%; 
             text-align: right; 
             padding-right: 5px; 
-            color: black; 
+            color: rgb(0, 0, 0); 
             box-sizing: border-box; 
             white-space: nowrap;
             font-weight: bold;
@@ -103,17 +168,54 @@
             line-height: 18px;
         }
 
-        /* Colores de las barras de promedio (semáforo) */
+        /* Colores de las barras de promedio (lógica de semáforo) */
+        /* Clase para promedios BAJOS (< 4) */
         .indicador-red .progress-bar { background-color: #dc3545; color: white; } 
+        /* Clase para promedios MEDIOS (entre 4 y 7) */
         .indicador-yellow .progress-bar { background-color: #ffc107; } 
+        /* Clase para promedios ALTOS (> 7) */
         .indicador-green .progress-bar { background-color: #28a745; color: white; } 
 
-        /* Estilos para la sección de Detalle de Distribución */
-        .estadisticas { margin-top: 30px; border-top: 2px solid #005f5f; padding-top: 20px; }
-        .estadisticas h2 { color: #005f5f; }
+        /* ============================================== */
+        /* == SECCIÓN 4: ESTILOS DE ESTADÍSTICAS DETALLADAS == */
+        /* ============================================== */
+
+        /* Contenedor de la sección de estadísticas (Detalle de Distribución) */
+        .estadisticas { 
+            margin-top: 30px; 
+            border-top: 2px solid #005f5f; 
+            padding-top: 20px; 
+        }
+        
+        /* Título principal de estadísticas */
+        .estadisticas h2 { 
+            color: #005f5f; 
+        }
+        
         /* Contenedor para agrupar estadísticas por Tarea */
-        .estadistica-tarea-group h3 { border-bottom: 1px solid #ccc; padding-bottom: 5px; margin-top: 20px; }
-        .estadistica-item { margin-bottom: 15px; border: 1px dashed #ccc; padding: 10px; }
+        .estadistica-tarea-group h3 { 
+            border-bottom: 1px solid #0c0c0c; 
+            padding-bottom: 5px; 
+            margin-top: 20px; 
+        }
+        
+        /* Contenedor para alinear los cursos horizontalmente */
+        .estadistica-cursos-container {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+
+        /* Estilo del recuadro de las estadísticas por Curso (Ej: "Nota 7: 2 estudiantes") */
+        .estadistica-item { 
+            margin-bottom: 0; 
+            border: 1px dashed #0c0c0c; 
+            padding: 10px; 
+            flex: 1 1 300px; /* Permite crecimiento/encogimiento con base de 300px */
+            max-width: 48%; 
+            box-sizing: border-box;
+        }
     </style>
 </head>
 <body>
@@ -129,7 +231,7 @@
                     {% for curso in cursos %}
                     <label>
                         <input type="checkbox" name="cursos" value="{{ curso }}" 
-                               {% if curso in request.form.getlist('cursos') %}checked{% endif %}> 
+                                {% if curso in request.form.getlist('cursos') %}checked{% endif %}> 
                         {{ curso }}
                     </label><br>
                     {% endfor %}
@@ -140,7 +242,7 @@
                     {% for tarea in tareas %}
                     <label>
                         <input type="checkbox" name="tareas" value="{{ tarea }}"
-                               {% if tarea in request.form.getlist('tareas') %}checked{% endif %}> 
+                                {% if tarea in request.form.getlist('tareas') %}checked{% endif %}> 
                         {{ tarea }}
                     </label><br>
                     {% endfor %}
@@ -150,19 +252,18 @@
                     <h3>TIPO DE GRAFICO:</h3>
                     <label>
                         <input type="radio" name="tipo_grafico" value="barras" 
-                               {% if request.form.get('tipo_grafico') == 'barras' or not request.form.get('tipo_grafico') %}checked{% endif %}> 
-                        BARRAS
-                    </label><br>
+                                {% if request.form.get('tipo_grafico') == 'barras' or not request.form.get('tipo_grafico') %}checked{% endif %}> 
+                        BARRAS </label><br>
                     <label>
                         <input type="radio" name="tipo_grafico" value="tendencias"
-                               {% if request.form.get('tipo_grafico') == 'tendencias' %}checked{% endif %}> 
-                        TENDENCIAS
-                    </label>
+                                {% if request.form.get('tipo_grafico') == 'tendencias' %}checked{% endif %}> 
+                        TENDENCIAS </label>
                 </div>
             </div>
             
             <div class="btn-actions">
                 <button type="submit" class="submit-btn">GRAFICAR</button>
+                
                 <a href="/limpiar" class="update-btn">ACTUALIZAR DATOS</a>
             </div>
             
@@ -207,17 +308,19 @@
                 <div class="estadistica-tarea-group">
                     <h3>Actividad: {{ tarea }}</h3>
                     
-                    {% for curso, conteo in cursos_data.items() %}
-                        {% if conteo %}
-                        <div class="estadistica-item">
-                            <h4>Curso: {{ curso }}</h4>
-                            {% for nota, cantidad in conteo.items()|sort(attribute='0') %}
-                                <p><b>Nota {{ nota }}:</b> {{ cantidad }} estudiante(s)</p>
-                            {% endfor %}
-                        </div>
-                        {% endif %}
-                    {% endfor %}
-                </div>
+                    <div class="estadistica-cursos-container"> 
+                        {% for curso, conteo in cursos_data.items() %}
+                            {% if conteo %}
+                            <div class="estadistica-item">
+                                <h4>Curso: {{ curso }}</h4>
+                                {% for nota, cantidad in conteo.items()|sort(attribute='0') %}
+                                    <p><b>Nota {{ nota }}:</b> {{ cantidad }} estudiante(s)</p>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    </div>
             {% endfor %}
         </div>
     </div>
