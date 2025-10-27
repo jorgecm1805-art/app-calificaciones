@@ -2,128 +2,112 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Resultados Programación 1</title>
-    
+    <title>Subir Archivo de Calificaciones</title>
     <style>
-        /* ============================================== */
-        /* == SECCIÓN 1: ESTILOS GLOBALES Y CONTENEDOR == */
-        /* ============================================== */
-        
-        /* Estilos globales del cuerpo de la página */ 
+        /* Estilos generales */
         body { 
-            font-family: sans-serif; /* TIPO Y FUENTE DE LETRA */
-            /*background-color: #00FFFF; /* COLOR DE FONDO DE LA PÁGINA (CYAN CLARO) */
-            background-image: url('https://wallpapers.com/images/high/data-computer-lights-codes-c4170huz2h074yvs.webp'); 
-            background-size: cover; /* Ajusta la imagen para cubrir todo el fondo */
-            background-repeat: no-repeat; /* Evita que la imagen se repita */
-            background-attachment: fixed; /* Mantiene la imagen fija al desplazarse */
-            background-color: #00FFFF; /* Color de respaldo si la imagen falla o tarda en cargar */
-            text-align: center; /* Centra todo el contenido */
-        }
-        
-        /* Contenedor principal (la caja blanca que contiene el formulario) */
-        .container { 
-            max-width: 600px; /* ANCHO MÁXIMO DEL CONTENEDOR */
-            margin: 100px auto; /* Centra la caja verticalmente y horizontalmente */
-            padding: 20px; 
-            background-color: white; /* COLOR DE FONDO DEL CONTENEDOR */
-            border: 4px solid #005f5f; /* COLOR Y GROSOR DEL BORDE */
-            box-shadow: 5px 5px 15px rgba(0,0,0,0.2); 
-        }
-        
-        /* Estilo del TÍTULO principal (Ej: "RESULTADOS PROGRAMACION 1") */
-        h1 { 
-            color: #080808; /* COLOR DEL TEXTO DEL TÍTULO */
-            font-size: 2.5em; /* TAMAÑO DE LETRA DEL TÍTULO */
-            margin-bottom: 30px; 
-        }
-        
-        /* Estilo del subtítulo (Ej: "SUBIR ARCHIVO EXCEL:") */
-        h2 { 
-            margin-top: 30px; 
-        }
-        
-        /* Estilo para mostrar mensajes de error */
-        .error { 
-            color: red; /* COLOR DEL MENSAJE DE ERROR */
-            font-weight: bold; 
-            margin-top: 15px; 
+            font-family: 'Arial', sans-serif;
+            background-image: url('https://elucubracion.com/wp-content/uploads/2014/05/fondo-abstracto-1.png'); 
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-color: #00FFFF; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
         }
 
-        /* ============================================== */
-        /* == SECCIÓN 2: ESTILOS DE INPUTS Y BOTONES == */
-        /* ============================================== */
-        
-        /* Contenedor del campo de subida de archivo */
-        .file-input-container { 
-            margin: 20px 0; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-        }
-        
-        /* Estilo del campo de entrada de archivo */
-        input[type="file"] { 
-            border: 1px solid #ccc; 
-            padding: 10px; 
-            border-radius: 5px; 
-            background-color: #f9f9f9; 
-        }
-        
-        /* Contenedor de los botones (AHORA SOLO UNO) */
-        .btn-container { 
-            margin-top: 40px; 
-            /* Se asegura que el contenido (el botón) esté centrado */
-            text-align: center; 
-        }
-        
-        /* Estilos del único botón (GRABAR DATOS) */
-        .btn { 
-            padding: 12px 30px; 
-            border: 2px solid #070707; /* BORDE DEL BOTÓN */
-            font-weight: bold; 
-            cursor: pointer; 
-            /* ELIMINAMOS MARGIN: 0 15PX; PARA MEJOR CENTRADO */
-            margin: 0; 
-            font-size: 1.1em; 
-            transition: background-color 0.3s; 
-            background-color: #04f84d; /* COLOR DE FONDO DEL BOTÓN GRABAR */
-        }
-        
-        /* Efecto al pasar el ratón sobre el botón GRABAR DATOS */
-        .btn:hover { 
-            background-color: #a0a0a0; 
+        /* Contenedor principal del formulario */
+        .container {
+            background-color: white;
+            border: 4px solid #0f0f0f; 
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 5px 5px 15px rgba(0,0,0,0.3);
+            width: 100%;
+            max-width: 500px;
         }
 
-        /* ELIMINAMOS TODOS LOS ESTILOS DE .btn-limpiar Y 'A' */
+        /* Título */
+        h1 {
+            text-align: center;
+            color: #111111; 
+            margin-bottom: 30px;
+        }
+
+        /* Estilo para los mensajes de error */
+        .error {
+            color: #dc3545;
+            text-align: center;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        /* Campo de subida de archivo */
+        input[type="file"] {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+            background-color: #f8f8f8;
+        }
+
+        /* Contenedor de botones (para alinear Submit y Evaluación) */
+        .button-group {
+            display: flex;
+            gap: 10px; /* Espacio entre los botones */
+        }
         
+        /* Botones comunes: Subir y Evalaciones */
+        .submit-btn, .evaluaciones-btn {
+            padding: 12px;
+            font-weight: bold;
+            border: 2px solid #0a0a0a;
+            cursor: pointer;
+            flex: 1; /* Hace que ambos botones ocupen el mismo ancho */
+            box-sizing: border-box;
+            font-size: 1.1em;
+            text-align: center; /* Asegura que el texto del enlace esté centrado */
+            text-decoration: none; /* Quita el subrayado del enlace */
+            color: inherit; /* Mantiene el color del texto negro */
+        }
+
+        /* Estilo específico del botón SUBIR ARCHIVO */
+        .submit-btn {
+            background-color: #04f84d; 
+            border: 2px solid #0a0a0a;
+        }
+
+        /* Estilo específico del botón EVALUACIONES */
+        .evaluaciones-btn {
+            background-color: #f8a203; /* Usamos el color del botón 'ACTUALIZAR DATOS' */
+        }
+
+        .evaluaciones-btn:hover {
+             opacity: 0.9;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>RESULTADOS PROGRAMACION 1</h1>
-        
-        <hr>
-        
+        <h1>SUBIR ARCHIVO DE CALIFICACIONES</h1>
+
         {% if error %}
-            <p class="error">{{ error }}</p>
+            <div class="error">{{ error }}</div>
         {% endif %}
-        
-        <h2>SUBIR ARCHIVO EXCEL:</h2>
-        
+
         <form method="post" enctype="multipart/form-data">
-            <div class="file-input-container">
-                <input type="file" name="archivo_excel" accept=".xlsx, .xls" required>
-            </div>
+            <input type="file" name="archivo_excel" accept=".xls,.xlsx" required>
             
-            <div class="btn-container">
-                <button type="submit" class="btn">MOSTRAR DATOS</button>
+            <div class="button-group">
+                <button type="submit" class="submit-btn">SUBIR ARCHIVO</button>
                 
-                </div>
+                <a href="{{ url_for('mostrar_evaluaciones') }}" class="evaluaciones-btn">EVALUACIONES</a>
+            </div>
         </form>
     </div>
 </body>
-</html>
-</body>
-
 </html>
