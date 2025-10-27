@@ -2,165 +2,285 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Resultados Programación 1</title>
+    <title>Resultados del Análisis</title>
     
     <style>
-        /* ============================================== */
-        /* == SECCIÓN 1: ESTILOS GLOBALES Y CONTENEDOR == */
-        /* ============================================== */
-        
-        /* Estilos generales de la página */
-        body { 
-            font-family: 'Arial', sans-serif; /* TIPO Y FUENTE DE LETRA */
-            /*background-color: #00FFFF; /* COLOR DE FONDO DE LA PÁGINA (CYAN CLARO) */
-            background-image: url('https://elucubracion.com/wp-content/uploads/2014/05/fondo-abstracto-1.png'); 
-            background-size: cover; /* Ajusta la imagen para cubrir todo el fondo */
-            background-repeat: no-repeat; /* Evita que la imagen se repita */
-            /*background-attachment: fixed; /* Mantiene la imagen fija al desplazarse */
-            background-color: #00FFFF; /* Color de respaldo si la imagen falla o tarda en cargar */
-            padding: 0; 
-            margin: 0; 
+      
+        /* == ESTILOS GLOBALES Y DE DISEÑO (BASADO EN LA IMAGEN) == */
+       
+        body { 	
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background-color: #FAEBD7; 
+            padding: 20px; 
+            margin: 0; 	
         }
         
-        /* Contenedor principal que centra todo el contenido */
-        .main-container { 
-            max-width: 1200px; /* ANCHO MÁXIMO DEL CONTENIDO */
+        .main-container { 	
+            max-width: 1300px;
             margin: 0 auto; 
-            padding: 20px; 
+            padding: 0; 	
         }
         
-        /* Estilo del TÍTULO principal (RESULTADOS PROGRAMACION 1) */
-        h1 { 
-            text-align: center; 
-            color: #111111; /* COLOR DEL TEXTO DEL TÍTULO */
-            font-size: 2.5em; /* TAMAÑO DE LETRA DEL TÍTULO */
-            margin-bottom: 20px; 
-        }
-
-        /* Estilo del contenedor principal de contenido (Cajas blancas de filtros y resultados) */
-        .panel { 
-            background-color: white; /* COLOR DE FONDO DE LOS PANELES */
-            border: 4px solid #0f0f0f; /* COLOR Y GROSOR DEL BORDE DE LOS PANELES */
-            padding: 20px; 
-            margin-bottom: 20px; 
-            box-shadow: 2px 2px 5px rgba(0,0,0,0.1); 
-        }
-
-        /* ============================================== */
-        /* == SECCIÓN 2: ESTILOS DE FILTROS Y BOTONES == */
-        /* ============================================== */
-
-        /* Diseño del contenedor de los filtros (Cursos, Tareas, Tipo de Gráfico) */
-        .filtros-container { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: flex-start; 
-            margin-bottom: 15px; 
-        }
-        
-        /* Estilos aplicados a cada grupo de filtros */
-        .filtro-grupo { 
-            padding: 10px; 
-        }
-        
-        /* Estilo del subtítulo de cada grupo de filtros (Ej: "CURSOS:", "TAREAS:") */
-        .filtro-grupo h3 { 
-            color: #005f5f; /* COLOR DEL TEXTO DEL SUBTÍTULO */
-            margin-top: 0; 
-            margin-bottom: 10px; 
-            font-size: 1.1em; 
-        }
-        
-        /* Contenedor de los botones principales (GRAFICAR y ACTUALIZAR DATOS) */
-        .btn-actions { 
-            display: flex; 
-            gap: 10px; 
-            margin-top: 20px;
-        }
-        
-        /* Estilos comunes para los botones GRAFICAR y ACTUALIZAR DATOS */
-        .submit-btn, .update-btn { 
-            padding: 10px; 
-            font-weight: bold; 
-            border: 2px solid #0a0a0a; /* COLOR DEL BORDE DEL BOTÓN */
-            cursor: pointer;
-            width: 50%; /* HACE QUE AMBOS BOTONES MIDAN LA MITAD DEL ESPACIO */
-            box-sizing: border-box;
-            font-size: 1.1em; /* Ejemplo: 1.0em es el tamaño normal. Usa 1.2em para más grande, o 0.8em para más pequeño. */
-        }
-
-        /* Estilo específico para el botón GRAFICAR */
-        .submit-btn { 
-            background-color: #04f84d; /* COLOR DE FONDO DEL BOTÓN GRAFICAR (GRIS CLARO) */
-        }
-        
-        /* Estilos específico para el botón ACTUALIZAR DATOS (limpiar sesión) */
-        .update-btn { 
-            background-color: #f8a203; /* COLOR DE FONDO DEL BOTÓN ACTUALIZAR DATOS (GRIS MÁS CLARO) */
-            text-align: center; 
-            text-decoration: none; 
-            color: inherit; 
-            line-height: normal; 
-        }
-
-        /* ============================================== */
-        /* == SECCIÓN 3: ESTILOS DEL GRÁFICO Y RESULTADOS == */
-        /* ============================================== */
-
-        /* Contenedor del Gráfico (el recuadro que contiene el gráfico Plotly) */
-        .grafico-container { 
-            background-color: #e0e0e0; /* COLOR DE FONDO DEL RECUADRO DEL GRÁFICO */
-            border: 2px solid #aaa; 
-            padding: 10px; 
-            min-height: 400px; 
+        /* Contenedor de la cabecera (Título y botones de navegación) */
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 20px;
         }
+        
+        /* Contenedor de los botones de la esquina superior derecha */
+        .header-actions {
+            display: flex; /* Permite que los botones se alineen horizontalmente */
+            gap: 10px; /* Espacio entre los botones */
+        }
 
-        /* Estilos para la sección de Indicadores de Promedio */
-        .indicadores-container { 
-            margin-top: 15px; 
-            padding-top: 15px;
-            border-top: 1px solid #ccc;
+        /* Estilo del TÍTULO principal (Resultados del Análisis) */
+        h1.main-title { 	
+            color: #020202; 
+            font-size: 2.5em;
+            font-weight: 600;
+        }
+
+        /* Estilo general para las tarjetas/paneles (card style) */
+        .panel { 	
+            background-color: #f7f7f7; 
+            border: 1px solid #020202;
+            border-radius: 8px;
+            padding: 25px; 	
+            margin-bottom: 25px; 		
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
         }
         
-        /* Contenedor para agrupar indicadores por Tarea */
-        .indicador-tarea-group {
-            margin-top: 20px;
-            padding-top: 10px;
-            border-top: 2px solid #005f5f; /* LÍNEA SEPARADORA ENTRE TAREAS */
+        /* Título dentro de los paneles (e.g., Seleccionar Filtros) */
+        .panel h2 {
+            color: #122b3d;
+            font-size: 1.5em;
+            margin-top: 0;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #0e0d0d;
         }
 
-        /* Estilos de la barra de progreso (la línea completa con etiqueta) */
-        .indicador { 
-            display: flex; 
-            align-items: center; 
-            margin-bottom: 10px; 
+        /* ============================================== */
+        /* == SECCIÓN DE FILTROS (GRID) == */
+        /* ============================================== */
+
+        .filtros-container { 	
+            display: grid; 	
+            grid-template-columns: repeat(3, 1fr) 200px; 
+            gap: 20px; 		
+            align-items: start;
+        }
+        
+        .filtro-grupo { 
+            padding: 0; 	
+        }
+        
+        .filtro-grupo h3 { 	
+            color: #555;
+            margin-top: 0; 	
+            margin-bottom: 10px; 		
+            font-size: 1.1em;
+            font-weight: 600; 	
+        }
+
+        /* Estilo de la caja de checkboxes (para Cursos y Tareas) */
+        .checkbox-box {
+            border: 1px solid #0a0a0a8e;
+            border-radius: 4px;
+            padding: 10px;
+            height: 150px; 
+            overflow-y: auto;
+            background-color: #f9f9f9;
+        }
+        
+        .checkbox-box label {
+            display: block;
+            margin-bottom: 5px;
+            cursor: pointer;
+        }
+
+        /* Estilo de la lista desplegable (Tipo de Visualización) */
+        .select-box select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #0a0a0a8e;
+            border-radius: 4px;
+            background-color: white;
+            font-size: 1em;
+        }
+        
+        /* Contenedor para el botón de acción (Generar Gráfico) */
+        .btn-action-container {
+            align-self: end; 
+        }
+
+        /* Botón principal GENERAR GRÁFICO Y ANÁLISIS (Verde) */
+        .submit-btn { 	
+            width: 100%;
+            padding: 12px; 	
+            font-weight: bold; 	
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            background-color: #28a745; 
+            color: white;
+            font-size: 1.1em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: background-color 0.2s;
+        }
+
+        .submit-btn:hover {
+            background-color: #218838;
+        }
+
+        /* ============================================== */
+        /* == ESTILOS DE NAVEGACIÓN (Cabecera y resultados) == */
+        /* ============================================== */
+        
+        /* Botones de navegación (Cargar Nuevo, Evaluaciones) */
+        .nav-link { 	
+            padding: 8px 15px;
+            font-weight: 500; 	
+            border: 1px solid #ccc; 
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            transition: background-color 0.2s;
+            white-space: nowrap; /* Evita que el texto se rompa */
+        }
+        
+        .nav-link.cargar-btn {
+            color: #f0ecec; /* Rojo para Cargar Nuevo */
+            background-color: #f80404;
+        }
+
+        .nav-link.evaluaciones-btn {
+            background-color: #007bff; /* Azul para Evaluaciones */
+            color: white;
+            border-color: #007bff;
+        }
+        
+        .nav-link:hover {
+            opacity: 0.9;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        /* Contenedor de botones de navegación en resultados (solo si se necesita un botón dentro del panel) */
+        .resultados-nav-container {
+            display: flex;
+            justify-content: flex-end; 
+            gap: 10px;
+            margin-bottom: 20px;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+        }
+
+        /* ============================================== */
+        /* == SECCIÓN DE GRÁFICO Y RESULTADOS == */
+        /* ============================================== */
+
+        .panel h2.grafico-title {
+            border-bottom: 2px solid #007bff;
+        }
+
+        .grafico-container { 	
+            background-color: rgb(136, 134, 134);
+            border: 1px solid #122b3d; 
+            border-radius: 6px;
+            padding: 10px; 	
+            min-height: 400px; 	
+            margin-top: 20px;
+        }
+
+        .grafico-oculto {
+            display: none; 
+        }
+
+        .error-message {
+            background-color: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border: 1px solid #f5c6cb;
+            border-radius: 4px;
+            margin-top: 15px;
+        }
+
+        .filtro-grafico-selector {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            margin-bottom: 15px;
+            gap: 10px;
+        }
+
+        .filtro-grafico-selector label {
+            font-weight: 600;
+            color: #1f3d53;
+        }
+
+        .filtro-grafico-selector select {
+            padding: 8px 12px;
+            border: 1px solid #141414;
+            border-radius: 4px;
+        }
+
+        /* ============================================== */
+        /* == ESTILOS DEL SEMÁFORO (Resumen de Promedios) == */
+        /* ============================================== */
+
+        .indicadores-container, .estadisticas { 	
+            margin-top: 30px; 	
+            padding-top: 20px;
+            border-top: 1px solid #eee; 
+        }
+        
+        .indicadores-container h2, .estadisticas h2 { 	
+            color: #1f3d53;
+            border-bottom: none;
+        }
+
+        .indicador-tarea-group {
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px solid #0f0f0f; 
+        }
+
+        /* Estilos de la barra de progreso */
+        .indicador { 	
+            display: flex; 	
+            align-items: center; 		
+            margin-bottom: 10px; 		
             font-size: 0.9em;
         }
         
-        /* Etiqueta del indicador (Ej: "Curso 1-2:") */
-        .indicador-label { 
-            min-width: 250px; /* ANCHO MÍNIMO DE LA ETIQUETA */
+        .indicador-label { 	
+            min-width: 250px;
             font-weight: bold;
         }
         
-        /* Contenedor de la barra de progreso (el fondo gris de la barra) */
-        .progress-bar-bg { 
-            width: 70%; /* ANCHO DE LA BARRA COMPLETA */
-            max-width: 700px; 
-            background-color: #f0f0f0; 
-            border: 1px solid #070707; 
-            height: 20px; 
-            display: flex; 
+        .progress-bar-bg { 	
+            width: 70%;
+            max-width: 700px; 	
+            background-color: #f0f0f0; 	
+            border: 1px solid #070707; 	
+            height: 20px; 	
+            display: flex; 	
             align-items: center;
         }
         
-        /* Barra de progreso real (el color que indica el promedio) */
         .progress-bar { 
-            height: 100%; 
-            text-align: right; 
+            height: 100%; 	
+            text-align: right; 	
             padding-right: 5px; 
-            color: rgb(0, 0, 0); 
+            color: rgb(0, 0, 0); 		
             box-sizing: border-box; 
             white-space: nowrap;
             font-weight: bold;
@@ -168,38 +288,18 @@
             line-height: 18px;
         }
 
-        /* Colores de las barras de promedio (lógica de semáforo) */
-        /* Clase para promedios BAJOS (< 4) */
-        .indicador-red .progress-bar { background-color: #dc3545; color: white; } 
-        /* Clase para promedios MEDIOS (entre 4 y 7) */
-        .indicador-yellow .progress-bar { background-color: #ffc107; } 
-        /* Clase para promedios ALTOS (> 7) */
+        /* Colores del Semáforo (Mantenidos) */
+        .indicador-red .progress-bar { background-color: #dc3545; color: white; } 	
+        .indicador-yellow .progress-bar { background-color: #ffc107; } 	
         .indicador-green .progress-bar { background-color: #28a745; color: white; } 
 
-        /* ============================================== */
-        /* == SECCIÓN 4: ESTILOS DE ESTADÍSTICAS DETALLADAS == */
-        /* ============================================== */
-
-        /* Contenedor de la sección de estadísticas (Detalle de Distribución) */
-        .estadisticas { 
-            margin-top: 30px; 
-            border-top: 2px solid #005f5f; 
-            padding-top: 20px; 
+        /* Estilos de Estadísticas */
+        .estadistica-tarea-group h3 { 	
+            border-bottom: 1px dashed #0e0d0d; 	
+            padding-bottom: 5px; 		
+            margin-top: 15px; 	
         }
         
-        /* Título principal de estadísticas */
-        .estadisticas h2 { 
-            color: #005f5f; 
-        }
-        
-        /* Contenedor para agrupar estadísticas por Tarea */
-        .estadistica-tarea-group h3 { 
-            border-bottom: 1px solid #0c0c0c; 
-            padding-bottom: 5px; 
-            margin-top: 20px; 
-        }
-        
-        /* Contenedor para alinear los cursos horizontalmente */
         .estadistica-cursos-container {
             display: flex;
             gap: 20px;
@@ -207,131 +307,251 @@
             margin-top: 15px;
         }
 
-        /* Estilo del recuadro de las estadísticas por Curso (Ej: "Nota 7: 2 estudiantes") */
         .estadistica-item { 
-            margin-bottom: 0; 
-            border: 1px dashed #0c0c0c; 
-            padding: 10px; 
-            flex: 1 1 300px; /* Permite crecimiento/encogimiento con base de 300px */
+            margin-bottom: 0; 	
+            border: 1px solid #57545473;
+            padding: 10px; 	
+            flex: 1 1 300px;
             max-width: 48%; 
             box-sizing: border-box;
+            border-radius: 4px;
+            background-color: #f8f3e2;
         }
+
     </style>
 </head>
 <body>
 
 <div class="main-container">
-    <h1>RESULTADOS PROGRAMACION 1</h1>
+
+    <div class="header-container">
+        <h1 class="main-title">Resultados del Análisis</h1>
+        
+        <div class="header-actions">
+            <a href="{{ url_for('mostrar_evaluaciones') }}" class="nav-link evaluaciones-btn">
+                <i class="fas fa-clipboard-list"></i> Evaluaciones
+            </a>
+            
+            <a href="{{ url_for('limpiar_datos') }}" class="nav-link cargar-btn">
+                <i class="fas fa-trash-alt"></i> Actualizar Notas Actividades
+            </a>
+        </div>
+    </div>
 
     <div class="panel">
+        <h2>Seleccionar Filtros</h2>
         <form method="post">
             <div class="filtros-container">
+                
                 <div class="filtro-grupo">
-                    <h3>CURSOS:</h3>
-                    {% for curso in cursos %}
-                    <label>
-                        <input type="checkbox" name="cursos" value="{{ curso }}" 
-                                {% if curso in request.form.getlist('cursos') %}checked{% endif %}> 
-                        {{ curso }}
-                    </label><br>
-                    {% endfor %}
+                    <h3>Cursos Disponibles</h3>
+                    <div class="checkbox-box">
+                        <label>
+                            <input type="checkbox" id="seleccionar-todos-cursos"> Seleccionar Todos
+                        </label>
+                        {% for curso in cursos %}
+                        <label>
+                            <input type="checkbox" name="cursos" value="{{ curso }}" 	
+                                    {% if curso in request.form.getlist('cursos') %}checked{% endif %}> 
+                            {{ curso }}
+                        </label>
+                        {% endfor %}
+                    </div>
                 </div>
                 
                 <div class="filtro-grupo">
-                    <h3>TAREAS:</h3>
-                    {% for tarea in tareas %}
-                    <label>
-                        <input type="checkbox" name="tareas" value="{{ tarea }}"
-                                {% if tarea in request.form.getlist('tareas') %}checked{% endif %}> 
-                        {{ tarea }}
-                    </label><br>
-                    {% endfor %}
+                    <h3>Tareas/Actividades Disponibles</h3>
+                    <div class="checkbox-box">
+                        <label>
+                            <input type="checkbox" id="seleccionar-todos-tareas"> Seleccionar Todas
+                        </label>
+                        {% for tarea in tareas %}
+                        <label>
+                            <input type="checkbox" name="tareas" value="{{ tarea }}"
+                                    {% if tarea in request.form.getlist('tareas') %}checked{% endif %}> 
+                            {{ tarea }}
+                        </label>
+                        {% endfor %}
+                    </div>
                 </div>
 
-                <div class="filtro-grupo grafico-tipo">
-                    <h3>TIPO DE GRAFICO:</h3>
-                    <label>
-                        <input type="radio" name="tipo_grafico" value="barras" 
-                                {% if request.form.get('tipo_grafico') == 'barras' or not request.form.get('tipo_grafico') %}checked{% endif %}> 
-                        BARRAS </label><br>
-                    <label>
-                        <input type="radio" name="tipo_grafico" value="tendencias"
-                                {% if request.form.get('tipo_grafico') == 'tendencias' %}checked{% endif %}> 
-                        TENDENCIAS </label>
+                <div class="filtro-grupo select-box">
+                    <h3>Tipo de Visualización</h3>
+                    <select name="tipo_grafico">
+                        <option value="tendencias"
+                                {% if request.form.get('tipo_grafico') == 'tendencias' or not request.form.get('tipo_grafico') %}selected{% endif %}>
+                            Gráfico de Tendencias
+                        </option>
+                        <option value="barras" 	
+                                {% if request.form.get('tipo_grafico') == 'barras' %}selected{% endif %}> 	
+                            Gráfico de Barras
+                        </option>
+                    </select>
                 </div>
-            </div>
-            
-            <div class="btn-actions">
-                <button type="submit" class="submit-btn">GRAFICAR</button>
                 
-                <a href="/limpiar" class="update-btn">ACTUALIZAR DATOS</a>
+                <div class="btn-action-container">
+                    <button type="submit" class="submit-btn">
+                        <i class="fas fa-chart-line"></i> Generar Gráfico y Análisis
+                    </button>
+                </div>
+                
             </div>
             
         </form>
     </div>
-
-    {% if grafico_html %}
+    {% if graficos_htmls or request.method == 'POST' %} 
     <div class="panel">
         
-        <div class="grafico-container">
-            {{ grafico_html | safe }}
-        </div>
+        <h2 class="grafico-title">Gráfico de Distribución por Actividad y Curso</h2>
 
-        <div class="indicadores-container">
-            <h2>Resumen de Promedios por Actividad</h2>
+        {% if not graficos_htmls and request.method == 'POST' %}
+        <div class="error-message">
+            <i class="fas fa-exclamation-triangle"></i> Error al graficar: No se encontraron datos para la selección actual.
+        </div>
+        {% elif graficos_htmls %}
+        
+            <div class="filtro-grafico-selector">
+                <label for="filtro_actividad_grafico">Mostrar Actividad:</label>
+                <select id="filtro_actividad_grafico" onchange="filtrarGrafico()">
+                    {% set primera_tarea = request.form.getlist('tareas')[0] if request.form.getlist('tareas') else '' %}
+
+                    {% for tarea in request.form.getlist('tareas') %}
+                    <option value="{{ tarea }}"
+                        {% if tarea == primera_tarea %}selected{% endif %}
+                    >{{ tarea }}</option>
+                    {% endfor %}
+                </select>
+            </div>
             
-            {% for tarea, items in indicadores.items() %}
-                <div class="indicador-tarea-group">
-                    <h3>Actividad: {{ tarea }}</h3>
-                    
-                    {% for item in items %}
-                        {% set promedio_norm = (item.promedio / 10) * 100 %} 
-                        {% set color_class = 'indicador-red' if item.promedio < 4 else ('indicador-yellow' if item.promedio < 7 else 'indicador-green') %}
+            <div class="grafico-container">
+                {% for tarea, html in graficos_htmls.items() %}
+                    {% set id_tarea = "grafico-" ~ (tarea | replace(' ', '_')) %}
+                    <div id="{{ id_tarea }}" class="{% if tarea != primera_tarea %}grafico-oculto{% endif %}">
+                        {{ html | safe }}
+                    </div>
+                {% endfor %}
+            </div>
+
+            <div class="indicadores-container">
+                <h2>Resumen de Promedios por Actividad</h2>
+                
+                {% for tarea, items in indicadores.items() %}
+                    <div class="indicador-tarea-group">
+                        <h3>Actividad: {{ tarea }}</h3>
                         
-                        <div class="indicador {{ color_class }}">
-                            <div class="indicador-label">Curso {{ item.curso }}:</div>
-                            <div class="progress-bar-bg">
-                                <div class="progress-bar" style="width: {{ promedio_norm }}%;">
-                                    {{ "%.2f"|format(item.promedio) }}
+                        {% for item in items %}
+                            {% set promedio_norm = (item.promedio / 10) * 100 %}	
+                            {% set color_class = 'indicador-red' if item.promedio < 4 else ('indicador-yellow' if item.promedio < 7 else 'indicador-green') %}
+                            
+                            <div class="indicador {{ color_class }}">
+                                <div class="indicador-label">Curso {{ item.curso }}:</div>
+                                <div class="progress-bar-bg">
+                                    <div class="progress-bar" style="width: {{ promedio_norm }}%;">
+                                        {{ "%.2f"|format(item.promedio) }}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    {% endfor %}
-                </div>
-            {% endfor %}
-        </div>
-        
-        <div class="estadisticas">
-            <h2>Detalle de Distribución de Calificaciones por Actividad</h2>
-            
-            {% for tarea, cursos_data in estadisticas.items() %}
-                <div class="estadistica-tarea-group">
-                    <h3>Actividad: {{ tarea }}</h3>
-                    
-                    <div class="estadistica-cursos-container"> 
-                        {% for curso, conteo in cursos_data.items() %}
-                            {% if conteo %}
-                            <div class="estadistica-item">
-                                <h4>Curso: {{ curso }}</h4>
-                                {% for nota, cantidad in conteo.items()|sort(attribute='0') %}
-                                    <p><b>Nota {{ nota }}:</b> {{ cantidad }} estudiante(s)</p>
-                                {% endfor %}
-                            </div>
-                            {% endif %}
                         {% endfor %}
                     </div>
+                {% endfor %}
+            </div>
+            
+            <div class="estadisticas">
+                <h2>Detalle de Distribución de Calificaciones por Actividad</h2>
+                
+                {% for tarea, cursos_data in estadisticas.items() %}
+                    <div class="estadistica-tarea-group">
+                        <h3>Actividad: {{ tarea }}</h3>
+                        
+                        <div class="estadistica-cursos-container"> 	
+                            {% for curso, conteo in cursos_data.items() %}
+                                {% if conteo %}
+                                <div class="estadistica-item">
+                                    <h4>Curso: {{ curso }}</h4>
+                                    {% for nota, cantidad in conteo.items()|sort(attribute='0') %}
+                                        <p><b>Nota {{ nota }}:</b> {{ cantidad }} estudiante(s)</p>
+                                    {% endfor %}
+                                </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
                     </div>
-            {% endfor %}
-        </div>
+                {% endfor %}
+            </div>
+            
+        {% endif %}
+
     </div>
     {% else %}
     <div class="panel" style="text-align: center; color: #555;">
-        <p>Por favor, selecciona los filtros y presiona GRAFICAR.</p>
+        <p>Selecciona los filtros y presiona 'Generar Gráfico y Análisis' para ver los resultados.</p>
     </div>
     {% endif %}
+    <script>
+        // Función de Filtrado de Gráficos (Mantenida)
+        function filtrarGrafico() {
+            const select = document.getElementById('filtro_actividad_grafico');
+            if (!select) return;
+
+            const tareaSeleccionada = select.value;
+            const graficoContainer = document.querySelector('.grafico-container');
+            if (!graficoContainer) return;
+            
+            const graficoContainers = graficoContainer.children;
+            
+            Array.from(graficoContainers).forEach(div => {
+                div.classList.add('grafico-oculto');
+            });
+            
+            const idGraficoSeleccionado = `grafico-${tareaSeleccionada.replace(/ /g, '_')}`;
+            const graficoDeseado = document.getElementById(idGraficoSeleccionado);
+
+            if (graficoDeseado) {
+                graficoDeseado.classList.remove('grafico-oculto');
+                
+                const plotElement = graficoDeseado.querySelector('.js-plotly-plot');
+                if (plotElement && typeof Plotly !== 'undefined') {
+                    Plotly.relayout(plotElement, {autosize: true});
+                }
+            }
+        }
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            const container = document.querySelector('.grafico-container');
+            if (container && container.children.length > 0) {
+                const link = document.createElement('link');
+                link.rel = 'stylesheet';
+                link.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css';
+                document.head.appendChild(link);
+                
+                setTimeout(filtrarGrafico, 100); 
+            }
+            
+            // Lógica de "Seleccionar Todos" para Cursos
+            const selectAllCursos = document.getElementById('seleccionar-todos-cursos');
+            if (selectAllCursos) {
+                selectAllCursos.addEventListener('change', function() {
+                    const checkboxes = document.querySelectorAll('.checkbox-box input[name="cursos"]');
+                    checkboxes.forEach(checkbox => {
+                        checkbox.checked = this.checked;
+                    });
+                });
+            }
+
+            // Lógica de "Seleccionar Todos" para Tareas
+            const selectAllTareas = document.getElementById('seleccionar-todos-tareas');
+            if (selectAllTareas) {
+                selectAllTareas.addEventListener('change', function() {
+                    const checkboxes = document.querySelectorAll('.checkbox-box input[name="tareas"]');
+                    checkboxes.forEach(checkbox => {
+                        checkbox.checked = this.checked;
+                    });
+                });
+            }
+        });
+    </script>
 
 </div>
 
 </body>
 </html>
-
