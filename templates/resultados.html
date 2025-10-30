@@ -2,14 +2,11 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Análisis de Evaluaciones por Subtema</title>
+    <title>Resultados del Análisis</title>
     
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-
     <style>
         /* ============================================== */
-        /* == ESTILOS GLOBALES Y DE DISEÑO == */
+        /* == ESTILOS GLOBALES Y DE DISEÑO (BASADO EN LA IMAGEN) == */
         /* ============================================== */
         
         body { 	
@@ -25,6 +22,7 @@
             padding: 0; 	
         }
         
+        /* Contenedor de la cabecera (Título y botones de navegación) */
         .header-container {
             display: flex;
             justify-content: space-between;
@@ -32,18 +30,20 @@
             margin-bottom: 20px;
         }
         
+        /* Contenedor de los botones de la esquina superior derecha */
         .header-actions {
-            display: flex; 
-            gap: 10px; 
+            display: flex; /* Permite que los botones se alineen horizontalmente */
+            gap: 10px; /* Espacio entre los botones */
         }
 
+        /* Estilo del TÍTULO principal (Resultados del Análisis) */
         h1.main-title { 	
             color: #020202; 
             font-size: 2.5em;
             font-weight: 600;
         }
 
-        /* Estilo base de Panel (Solo si no está dentro de .analysis-card) */
+        /* Estilo general para las tarjetas/paneles (card style) */
         .panel { 	
             background-color: #f7f7f7; 
             border: 1px solid #020202;
@@ -53,6 +53,7 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.08);
         }
         
+        /* Título dentro de los paneles (e.g., Seleccionar Filtros) */
         .panel h2 {
             color: #122b3d;
             font-size: 1.5em;
@@ -62,7 +63,87 @@
             border-bottom: 2px solid #0e0d0d;
         }
 
-        /* Botones de navegación */
+        /* ============================================== */
+        /* == SECCIÓN DE FILTROS (GRID) == */
+        /* ============================================== */
+
+        .filtros-container { 	
+            display: grid; 	
+            grid-template-columns: repeat(3, 1fr) 200px; 
+            gap: 20px; 		
+            align-items: start;
+        }
+        
+        .filtro-grupo { 
+            padding: 0; 	
+        }
+        
+        .filtro-grupo h3 { 	
+            color: #555;
+            margin-top: 0; 	
+            margin-bottom: 10px; 		
+            font-size: 1.1em;
+            font-weight: 600; 	
+        }
+
+        /* Estilo de la caja de checkboxes (para Cursos y Tareas) */
+        .checkbox-box {
+            border: 1px solid #0a0a0a8e;
+            border-radius: 4px;
+            padding: 10px;
+            height: 150px; 
+            overflow-y: auto;
+            background-color: #f9f9f9;
+        }
+        
+        .checkbox-box label {
+            display: block;
+            margin-bottom: 5px;
+            cursor: pointer;
+        }
+
+        /* Estilo de la lista desplegable (Tipo de Visualización) */
+        .select-box select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #0a0a0a8e;
+            border-radius: 4px;
+            background-color: white;
+            font-size: 1em;
+        }
+        
+        /* Contenedor para el botón de acción (Generar Gráfico) */
+        .btn-action-container {
+            align-self: end; 
+        }
+
+        /* Botón principal GENERAR GRÁFICO Y ANÁLISIS (Verde) */
+        .submit-btn { 	
+            width: 100%;
+            padding: 12px; 	
+            font-weight: bold; 	
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            background-color: #28a745; 
+            color: white;
+            font-size: 1.1em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: background-color 0.2s;
+        }
+
+        .submit-btn:hover {
+            background-color: #218838;
+        }
+
+        /* ============================================== */
+        /* == ESTILOS DE NAVEGACIÓN (Cabecera y resultados) == */
+        /* ============================================== */
+        
+        /* Botones de navegación (Cargar Nuevo, Evaluaciones) */
         .nav-link { 	
             padding: 8px 15px;
             font-weight: 500; 	
@@ -74,310 +155,168 @@
             align-items: center;
             gap: 5px;
             transition: background-color 0.2s;
-            white-space: nowrap; 
-            margin-bottom: 20px; /* Separación del grid */
+            white-space: nowrap; /* Evita que el texto se rompa */
         }
         
         .nav-link.cargar-btn {
-            color: #f0ecec; 
-            background-color: #f80404; 
-            border-color: #070707;
+            color: #f0ecec; /* Rojo para Cargar Nuevo */
+            background-color: #f80404;
         }
 
+        .nav-link.evaluaciones-btn {
+            background-color: #007bff; /* Azul para Evaluaciones */
+            color: white;
+            border-color: #007bff;
+        }
+        
         .nav-link:hover {
             opacity: 0.9;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
-        /* Botón de Acción */
-        .submit-btn { 	
-            width: 100%;
-            height: 42px;
-            padding: 0 12px; 	
-            font-weight: bold; 	
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            background-color: #28a745; 
-            color: white;
-            font-size: 1.0em; 
+        /* Contenedor de botones de navegación en resultados (solo si se necesita un botón dentro del panel) */
+        .resultados-nav-container {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            transition: background-color 0.2s;
-            margin-top: 10px;
+            justify-content: flex-end; 
+            gap: 10px;
+            margin-bottom: 20px;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
         }
 
-        .submit-btn:hover {
-            background-color: #218838;
+        /* ============================================== */
+        /* == SECCIÓN DE GRÁFICO Y RESULTADOS == */
+        /* ============================================== */
+
+        .panel h2.grafico-title {
+            border-bottom: 2px solid #007bff;
         }
 
-        /* - */
-        /* ORGANIZACIÓN DEL PANEL DE CONTROL (AJUSTADO) */
-        /* - */
-        
-        /* Contenedor principal de filtros dentro de la tarjeta del grid */
-        #control-panel-card h2 {
-            font-size: 1.3em;
-            margin-top: 0;
-            margin-bottom: 15px;
-            padding-bottom: 5px;
-            border-bottom: 1px solid #ccc;
-        }
-
-        .control-group-upload {
-            padding-bottom: 15px;
-            border-bottom: 1px solid #eee;
-            margin-bottom: 15px;
-        }
-
-        
-        .control-group-filters {
-            display: flex;
-            flex-direction: column; 
-            gap: 15px; 
-            align-items: stretch; 
-        }
-        
-        .upload-input-group {
-            width: 100%; 
-            display: flex; 
-            flex-direction: column;
-        }
-
-        .upload-input-group input[type="file"] {
-            padding: 8px; 
-            border: 1px solid #0a0a0a8e; 
-            border-radius: 4px;
-            background-color: white;
-            font-size: 0.9em; 
-        }
-
-        .filtro-grupo {
-            width: 100%; 
-            box-sizing: border-box;
-        }
-
-        .select-box select { 
-            width: 100%;
-            padding: 6px; 
-            border: 1px solid #0a0a0a8e;
-            border-radius: 4px;
-            background-color: white;
-            font-size: 0.9em; 
-            height: 38px; 
-            box-sizing: border-box;
-        }
-        
-        .checkbox-list-container {
-            border: 1px solid #0a0a0a8e;
-            border-radius: 4px;
-            background-color: white;
-            min-height: 38px; 
-            max-height: 100px; 
-            overflow-y: auto;
-            padding: 3px 8px; 
-        }
-
-        .checkbox-item {
-            font-size: 0.85em; 
-        }
-        
-        .filtro-grupo h3 { 	
-            color: #0e0d0d;
-            margin-top: 0; 	
-            margin-bottom: 3px; 		
-            font-size: 1.0em;
-            font-weight: 600; 	
-        }
-        
-        .btn-action-container {
-            width: 100%;
-            display: flex;
-            align-items: flex-end; 
-            padding-top: 10px; /* Menos padding */
-        }
-
-        /* Estilos de Gráfico y Semáforo */
         .grafico-container { 	
-            background-color: #ffffff;
+            background-color: rgb(136, 134, 134);
             border: 1px solid #122b3d; 
             border-radius: 6px;
-            padding: 5px; 
-            margin-top: 10px; 
+            padding: 10px; 	
+            min-height: 400px; 	
+            margin-top: 20px;
         }
-        
+
+        .grafico-oculto {
+            display: none; 
+        }
+
+        .error-message {
+            background-color: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border: 1px solid #f5c6cb;
+            border-radius: 4px;
+            margin-top: 15px;
+        }
+
+        .filtro-grafico-selector {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            margin-bottom: 15px;
+            gap: 10px;
+        }
+
+        .filtro-grafico-selector label {
+            font-weight: 600;
+            color: #1f3d53;
+        }
+
+        .filtro-grafico-selector select {
+            padding: 8px 12px;
+            border: 1px solid #141414;
+            border-radius: 4px;
+        }
+
+        /* ============================================== */
+        /* == ESTILOS DEL SEMÁFORO (Resumen de Promedios) == */
+        /* ============================================== */
+
         .indicadores-container, .estadisticas { 	
-            margin-top: 0px; 	
-            padding-top: 0px;
-            border-top: none; 
-        }
-
-        /* Estilos para el agrupamiento por Lección en el Semáforo  */
-        .lesson-group-semaphore {
-            margin-bottom: 15px; 
-            padding: 10px;
-            border: 1px solid #646262;
-            border-radius: 6px;
-            background-color: #f0f8ff;
-        }
-
-        .lesson-group-semaphore h3 {
-            font-size: 1.1em; 
-            padding-bottom: 3px;
+            margin-top: 30px; 	
+            padding-top: 20px;
+            border-top: 1px solid #eee; 
         }
         
+        .indicadores-container h2, .estadisticas h2 { 	
+            color: #1f3d53;
+            border-bottom: none;
+        }
+
+        .indicador-tarea-group {
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px solid #0f0f0f; 
+        }
+
+        /* Estilos de la barra de progreso */
         .indicador { 	
-            margin-bottom: 5px; 
-            font-size: 0.75em; 
-        }
-        .indicador-label { 	
-            min-width: 100px; 
-        }
-        .progress-bar-bg { 	
-            height: 15px; 
-        }
-        
-        /* Estilo base de la barra de progreso */
-        .progress-bar { 
-            font-size: 0.65em;
-            line-height: 15px;
-            border: 1px solid black; 
-            box-sizing: border-box; 
-            text-align: right;
-            padding-right: 5px;
-        }
-        
-        /* Asignación de colores de barra usando clases CSS */
-        .indicador-red .progress-bar {
-            background-color: #f8061e; 
-            color: white;
-        }
-
-        .indicador-yellow .progress-bar {
-            background-color: #f1b605; 
-            color: black;
-        }
-
-        .indicador-green .progress-bar {
-            background-color: #0e8d2b; 
-            color: white;
-        }
-        
-        
-        /* Estilos específicos para el indicador de refuerzo GRUPAL */
-        .refuerzo-box {
-            padding: 8px;
-            margin-bottom: 5px;
-            font-size: 0.8em; 
-        }
-        .refuerzo-box h4 {
+            display: flex; 	
+            align-items: center; 		
+            margin-bottom: 10px; 		
             font-size: 0.9em;
         }
-        .refuerzo-box ul {
-            font-size: 0.85em;
+        
+        .indicador-label { 	
+            min-width: 250px;
+            font-weight: bold;
+        }
+        
+        .progress-bar-bg { 	
+            width: 70%;
+            max-width: 700px; 	
+            background-color: #f0f0f0; 	
+            border: 1px solid #070707; 	
+            height: 20px; 	
+            display: flex; 	
+            align-items: center;
+        }
+        
+        .progress-bar { 
+            height: 100%; 	
+            text-align: right; 	
+            padding-right: 5px; 
+            color: rgb(0, 0, 0); 		
+            box-sizing: border-box; 
+            white-space: nowrap;
+            font-weight: bold;
+            font-size: 0.8em;
+            line-height: 18px;
         }
 
-        /* - */
-        /* == LAYOUT DE 4 PARTES IGUALES  == */
-        /* - */
+        /* Colores del Semáforo (Mantenidos) */
+        .indicador-red .progress-bar { background-color: #dc3545; color: white; } 	
+        .indicador-yellow .progress-bar { background-color: #ffc107; } 	
+        .indicador-green .progress-bar { background-color: #28a745; color: white; } 
 
-        .results-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(48%, 1fr)); 
-            gap: 20px; 
-            margin-top: 10px;
+        /* Estilos de Estadísticas */
+        .estadistica-tarea-group h3 { 	
+            border-bottom: 1px dashed #0e0d0d; 	
+            padding-bottom: 5px; 		
+            margin-top: 15px; 	
+        }
+        
+        .estadistica-cursos-container {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 15px;
         }
 
-        .analysis-card {
+        .estadistica-item { 
+            margin-bottom: 0; 	
+            border: 1px solid #57545473;
+            padding: 10px; 	
+            flex: 1 1 300px;
+            max-width: 48%; 
             box-sizing: border-box;
-            background-color: #f7f7f7; 
-            border: 1px solid #020202;
-            border-radius: 8px;
-            padding: 15px; 
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-            min-width: 0; 
-            overflow: auto; 
-            max-height: 750px; 
-        }
-
-        .analysis-card h2, .analysis-card .grafico-title {
-            font-size: 1.3em;
-            margin-top: 0;
-            margin-bottom: 10px;
-            padding-bottom: 5px;
-            border-bottom: 1px solid #ccc;
-        }
-
-        /* Estilo para el contenedor de refuerzo y semáforo  */
-        #indicators-refuerzo-card h2 {
-             font-size: 1.3em;
-             margin-top: 0;
-             margin-bottom: 10px;
-             padding-bottom: 5px;
-             border-bottom: 1px solid #ccc;
-        }
-        #indicators-refuerzo-card h3 {
-             font-size: 1.1em;
-             margin-top: 10px;
-        }
-        
-
-        .analysis-card .indicador { 	
-            font-size: 0.8em; 
-            margin-bottom: 3px;
-        }
-        .analysis-card .indicador-label { 	
-            min-width: 120px; 
-            font-weight: 500;
-        }
-
-        .analysis-card .estadistica-item { 
-            padding: 5px; 	
-            flex: 1 1 100%; 
-            max-width: 100%; 
-            font-size: 0.8em; 
-        }
-
-        #graficoContainer_Unified {
-            min-height: 500px; 
-            height: 500px; 
-        }
-
-        /* Sección de Tablas de Muestra */
-        .lesson-results-section {
-            border: 1px solid #ddd; 
-            border-radius: 8px;
-            padding: 15px;
-            margin-top: 20px;
-            background-color: #fff;
-            box-shadow: 0 0 5px rgba(0,0,0,0.05);
-            overflow-x: auto; 
-        }
-        
-        .results-table-container table {
-             width: 100%; 
-             border-collapse: collapse;
-             min-width: 1000px; 
-        }
-
-        .results-table-container th, .results-table-container td {
-            font-size: 0.8em; 
-            padding: 6px 4px; 
-            border: 1px solid #ddd;
-            text-align: center;
-        }
-        
-        .results-table-container .student-info {
-            min-width: 70px; 
-        }
-        .results-table-container .student-info:nth-child(2) {
-             min-width: 120px; 
-        }
-        .results-table-container .nota-final {
-             min-width: 60px; 
-             font-weight: bold;
+            border-radius: 4px;
+            background-color: #f8f3e2;
         }
 
     </style>
@@ -386,1092 +325,234 @@
 
 <div class="main-container">
 
-    <div class="header-actions">
-        <h1 class="main-title">Análisis de Evaluaciones</h1>
-        <a href="resultados" class="nav-link cargar-btn">
-            <i class="fas fa-list-alt"></i> Ir Actividades
-        </a>
-    </div>
-    
-    <div class="results-grid">
+    <div class="header-container">
+        <h1 class="main-title">Resultados del Análisis</h1>
         
-        <div id="control-panel-card" class="analysis-card">
-            <h2>Menú de Control y Análisis</h2>
-        
-            <div class="control-group-upload">
-                <div class="upload-input-group">
-                    <h3>1. Subir Archivo de Evaluaciones (.xlsx)</h3>
-                    <input type="file" id="excelFile" accept=".xls,.xlsx" required onchange="handleFileLoad(event)">
-                </div>
-            </div>
-
-            <div class="control-group-filters">
+        <div class="header-actions">
+            <a href="{{ url_for('mostrar_evaluaciones') }}" class="nav-link evaluaciones-btn">
+                <i class="fas fa-clipboard-list"></i> Evaluaciones
+            </a>
             
+            <a href="{{ url_for('limpiar_datos') }}" class="nav-link cargar-btn">
+                <i class="fas fa-trash-alt"></i> Actualizar Notas Actividades
+            </a>
+        </div>
+    </div>
+
+    <div class="panel">
+        <h2>Seleccionar Filtros</h2>
+        <form method="post">
+            <div class="filtros-container">
+                
                 <div class="filtro-grupo">
-                    <h3>2. Lección </h3>
-                    <div id="lessonCheckboxesContainer" class="checkbox-list-container disabled">
-                        <div class="checkbox-item">
-                            <input type="checkbox" id="selectAllLessons" onchange="toggleSelectAll('lessonCheckboxesContainer', 'lessonOption', this.checked)">
-                            <label for="selectAllLessons">Seleccionar Todas</label>
-                        </div>
+                    <h3>Cursos Disponibles</h3>
+                    <div class="checkbox-box">
+                        <label>
+                            <input type="checkbox" id="seleccionar-todos-cursos"> Seleccionar Todos
+                        </label>
+                        {% for curso in cursos %}
+                        <label>
+                            <input type="checkbox" name="cursos" value="{{ curso }}" 	
+                                    {% if curso in request.form.getlist('cursos') %}checked{% endif %}> 
+                            {{ curso }}
+                        </label>
+                        {% endfor %}
                     </div>
                 </div>
-            
+                
                 <div class="filtro-grupo">
-                    <h3>3. Cursos Disponibles</h3>
-                    <div id="courseCheckboxesContainer" class="checkbox-list-container disabled">
-                        <div class="checkbox-item">
-                            <input type="checkbox" id="selectAllCourses" onchange="toggleSelectAll('courseCheckboxesContainer', 'courseOption', this.checked)">
-                            <label for="selectAllCourses">Seleccionar Todos</label>
-                        </div>
+                    <h3>Tareas/Actividades Disponibles</h3>
+                    <div class="checkbox-box">
+                        <label>
+                            <input type="checkbox" id="seleccionar-todos-tareas"> Seleccionar Todas
+                        </label>
+                        {% for tarea in tareas %}
+                        <label>
+                            <input type="checkbox" name="tareas" value="{{ tarea }}"
+                                    {% if tarea in request.form.getlist('tareas') %}checked{% endif %}> 
+                            {{ tarea }}
+                        </label>
+                        {% endfor %}
                     </div>
                 </div>
 
                 <div class="filtro-grupo select-box">
-                    <h3>4. Tipo de Visualización</h3>
-                    <select id="tipoGraficoSelector">
-                        <option value="barras" selected>Gráfico de Barras</option>
-                        <option value="tendencias">Gráfico de Tendencias</option>
+                    <h3>Tipo de Visualización</h3>
+                    <select name="tipo_grafico">
+                        <option value="tendencias"
+                                {% if request.form.get('tipo_grafico') == 'tendencias' or not request.form.get('tipo_grafico') %}selected{% endif %}>
+                            Gráfico de Tendencias
+                        </option>
+                        <option value="barras" 	
+                                {% if request.form.get('tipo_grafico') == 'barras' %}selected{% endif %}> 	
+                            Gráfico de Barras
+                        </option>
                     </select>
                 </div>
-            
+                
                 <div class="btn-action-container">
-                    <button type="button" class="submit-btn" onclick="analyzeSelectedLessons()">
-                        <i class="fas fa-chart-bar"></i> Generar Análisis 
+                    <button type="submit" class="submit-btn">
+                        <i class="fas fa-chart-line"></i> Generar Gráfico y Análisis
                     </button>
                 </div>
-
-            </div>
-        </div>
-        
-        <div id="chart-card" class="analysis-card">
-            <h2 class="grafico-title">Gráfico de Rendimiento por Lección, Subtema y Curso</h2>
-            <div id="graficoContainer_Unified" class="grafico-container grid-item-content">
-                 <p id="chart-placeholder" style="text-align: center; color: #777; margin-top: 100px;">Genera el análisis para ver el gráfico.</p>
-            </div> 
-        </div>
-
-        <div id="indicators-refuerzo-card" class="analysis-card">
-            <h2>Resumen y Refuerzo</h2>
-            <div id="refuerzoContainer_Unified" class="indicadores-container grid-item-content"> 
-                <h3>Rendimiento Grupal y Recomendaciones de Refuerzo</h3>
-                <div id="refuerzoList_Unified">
-                    <p style="text-align: center; color: #777;">Genera el análisis para ver las recomendaciones.</p>
-                </div>
+                
             </div>
             
-            <hr style="border: 0; border-top: 1px dashed #ccc; margin: 10px 0;">
-
-            <div id="indicadoresContainer_Unified" class="indicadores-container grid-item-content">
-                <h3>Resumen de Promedios por Subtema</h3>
-            </div>
-        </div>
-
-        <div id="estadisticas-card" class="analysis-card">
-            <div id="estadisticasContainer_Unified" class="estadisticas grid-item-content">
-                <h2>Detalle de Distribución de Calificaciones</h2>
-                <p style="text-align: center; color: #777; margin-top: 100px;">Genera el análisis para ver las estadísticas.</p>
-            </div>
-        </div>
+        </form>
+    </div>
+    {% if graficos_htmls or request.method == 'POST' %} 
+    <div class="panel">
         
-    </div>
-    <div id="table-results-wrapper">
-         <hr style="border: 0; border-top: 3px solid #122b3d; margin: 40px 0;">
-         <h3 id="table-title" style="display: none;">Tablas de Notas por Lección (Muestra de 10 Estudiantes)</h3>
-         <div id="lessonResultsContainer">
-             <div id="initial-message" class="panel" style="text-align: center; color: #555;">
-                <i class="fas fa-database fa-3x" style="margin-bottom: 15px; color: #020202;"></i>
-                <p>Suba un archivo de evaluación que contenga una o varias hojas (lecciones) para comenzar el análisis.</p>
-                <p style="font-weight: bold;">Nota: La nota final se calcula en base a 20 preguntas donde cada acierto equivale a 0.5 puntos.</p>
-            </div>
-         </div>
-    </div>
+        <h2 class="grafico-title">Gráfico de Distribución por Actividad y Curso</h2>
 
+        {% if not graficos_htmls and request.method == 'POST' %}
+        <div class="error-message">
+            <i class="fas fa-exclamation-triangle"></i> Error al graficar: No se encontraron datos para la selección actual.
+        </div>
+        {% elif graficos_htmls %}
+        
+            <div class="filtro-grafico-selector">
+                <label for="filtro_actividad_grafico">Mostrar Actividad:</label>
+                <select id="filtro_actividad_grafico" onchange="filtrarGrafico()">
+                    {% set primera_tarea = request.form.getlist('tareas')[0] if request.form.getlist('tareas') else '' %}
+
+                    {% for tarea in request.form.getlist('tareas') %}
+                    <option value="{{ tarea }}"
+                        {% if tarea == primera_tarea %}selected{% endif %}
+                    >{{ tarea }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <div class="grafico-container">
+                {% for tarea, html in graficos_htmls.items() %}
+                    {% set id_tarea = "grafico-" ~ (tarea | replace(' ', '_')) %}
+                    <div id="{{ id_tarea }}" class="{% if tarea != primera_tarea %}grafico-oculto{% endif %}">
+                        {{ html | safe }}
+                    </div>
+                {% endfor %}
+            </div>
+
+            <div class="indicadores-container">
+                <h2>Resumen de Promedios por Actividad</h2>
+                
+                {% for tarea, items in indicadores.items() %}
+                    <div class="indicador-tarea-group">
+                        <h3>Actividad: {{ tarea }}</h3>
+                        
+                        {% for item in items %}
+                            {% set promedio_norm = (item.promedio / 10) * 100 %}	
+                            {% set color_class = 'indicador-red' if item.promedio < 4 else ('indicador-yellow' if item.promedio < 7 else 'indicador-green') %}
+                            
+                            <div class="indicador {{ color_class }}">
+                                <div class="indicador-label">Curso {{ item.curso }}:</div>
+                                <div class="progress-bar-bg">
+                                    <div class="progress-bar" style="width: {{ promedio_norm }}%;">
+                                        {{ "%.2f"|format(item.promedio) }}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+            </div>
+            
+            <div class="estadisticas">
+                <h2>Detalle de Distribución de Calificaciones por Actividad</h2>
+                
+                {% for tarea, cursos_data in estadisticas.items() %}
+                    <div class="estadistica-tarea-group">
+                        <h3>Actividad: {{ tarea }}</h3>
+                        
+                        <div class="estadistica-cursos-container"> 	
+                            {% for curso, conteo in cursos_data.items() %}
+                                {% if conteo %}
+                                <div class="estadistica-item">
+                                    <h4>Curso: {{ curso }}</h4>
+                                    {% for nota, cantidad in conteo.items()|sort(attribute='0') %}
+                                        <p><b>Nota {{ nota }}:</b> {{ cantidad }} estudiante(s)</p>
+                                    {% endfor %}
+                                </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            
+        {% endif %}
+
+    </div>
+    {% else %}
+    <div class="panel" style="text-align: center; color: #555;">
+        <p>Selecciona los filtros y presiona 'Generar Gráfico y Análisis' para ver los resultados.</p>
+    </div>
+    {% endif %}
+    <script>
+        // Función de Filtrado de Gráficos (Mantenida)
+        function filtrarGrafico() {
+            const select = document.getElementById('filtro_actividad_grafico');
+            if (!select) return;
+
+            const tareaSeleccionada = select.value;
+            const graficoContainer = document.querySelector('.grafico-container');
+            if (!graficoContainer) return;
+            
+            const graficoContainers = graficoContainer.children;
+            
+            Array.from(graficoContainers).forEach(div => {
+                div.classList.add('grafico-oculto');
+            });
+            
+            const idGraficoSeleccionado = `grafico-${tareaSeleccionada.replace(/ /g, '_')}`;
+            const graficoDeseado = document.getElementById(idGraficoSeleccionado);
+
+            if (graficoDeseado) {
+                graficoDeseado.classList.remove('grafico-oculto');
+                
+                const plotElement = graficoDeseado.querySelector('.js-plotly-plot');
+                if (plotElement && typeof Plotly !== 'undefined') {
+                    Plotly.relayout(plotElement, {autosize: true});
+                }
+            }
+        }
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            const container = document.querySelector('.grafico-container');
+            if (container && container.children.length > 0) {
+                const link = document.createElement('link');
+                link.rel = 'stylesheet';
+                link.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css';
+                document.head.appendChild(link);
+                
+                setTimeout(filtrarGrafico, 100); 
+            }
+            
+            // Lógica de "Seleccionar Todos" para Cursos
+            const selectAllCursos = document.getElementById('seleccionar-todos-cursos');
+            if (selectAllCursos) {
+                selectAllCursos.addEventListener('change', function() {
+                    const checkboxes = document.querySelectorAll('.checkbox-box input[name="cursos"]');
+                    checkboxes.forEach(checkbox => {
+                        checkbox.checked = this.checked;
+                    });
+                });
+            }
+
+            // Lógica de "Seleccionar Todos" para Tareas
+            const selectAllTareas = document.getElementById('seleccionar-todos-tareas');
+            if (selectAllTareas) {
+                selectAllTareas.addEventListener('change', function() {
+                    const checkboxes = document.querySelectorAll('.checkbox-box input[name="tareas"]');
+                    checkboxes.forEach(checkbox => {
+                        checkbox.checked = this.checked;
+                    });
+                });
+            }
+        });
+    </script>
 
 </div>
 
-<script>
-    let globalAllLessonsData = {}; 
-    const POINTS_PER_CORRECT = 0.5; 
-    const REINFORCEMENT_THRESHOLD = 7.0; 
-
-    document.addEventListener('DOMContentLoaded', () => {
-        const link = document.createElement('link');
-        link.rel = 'stylesheet';
-        link.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css';
-        document.head.appendChild(link);
-    });
-    
-    //  LÓGICA DE CHECKBOXES (SIN CAMBIOS ESTRUCTURALES) 
-
-    function setCheckboxContainerDisabled(containerId, disabled) {
-        const container = document.getElementById(containerId);
-        if (container) {
-            if (disabled) {
-                container.classList.add('disabled');
-                container.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.disabled = true);
-            } else {
-                container.classList.remove('disabled');
-                container.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.disabled = false);
-            }
-        }
-    }
-
-    function toggleSelectAll(containerId, optionClass, checked) {
-        const container = document.getElementById(containerId);
-        if (!container) return;
-
-        container.querySelectorAll(`input[type="checkbox"].${optionClass}`).forEach(checkbox => {
-            checkbox.checked = checked;
-        });
-
-        const selectAllCheckbox = container.querySelector('input[type="checkbox"][id^="selectAll"]');
-        if (selectAllCheckbox) {
-            selectAllCheckbox.checked = checked;
-        }
-        
-        if (containerId === 'lessonCheckboxesContainer') {
-            updateCourseSelector();
-        }
-    }
-
-    function synchronizeSelectAll(containerId, optionClass) {
-        const container = document.getElementById(containerId);
-        if (!container) return;
-
-        const selectAllCheckbox = container.querySelector('input[type="checkbox"][id^="selectAll"]');
-        if (!selectAllCheckbox) return;
-
-        const individualCheckboxes = container.querySelectorAll(`input[type="checkbox"].${optionClass}`);
-        const allChecked = Array.from(individualCheckboxes).every(cb => cb.checked);
-        const anyChecked = Array.from(individualCheckboxes).some(cb => cb.checked);
-
-        selectAllCheckbox.checked = allChecked;
-        selectAllCheckbox.indeterminate = !allChecked && anyChecked;
-        
-        if (containerId === 'lessonCheckboxesContainer') {
-            updateCourseSelector();
-        }
-    }
-
-    function getSelectedValues(containerId, optionClass) {
-        const container = document.getElementById(containerId);
-        if (!container) return [];
-
-        let selectedValues = Array.from(container.querySelectorAll(`input[type="checkbox"].${optionClass}:checked`))
-                                    .map(checkbox => checkbox.value);
-        
-        if (selectedValues.length === 0 && container.classList.contains('disabled')) {
-            return [];
-        }
-        
-        const selectAllCheckbox = container.querySelector('input[type="checkbox"][id^="selectAll"]');
-        if (selectAllCheckbox && selectAllCheckbox.checked && selectedValues.length > 0) {
-             selectedValues = Array.from(container.querySelectorAll(`input[type="checkbox"].${optionClass}`))
-                                .map(checkbox => checkbox.value);
-        }
-
-        return [...new Set(selectedValues)];
-    }
-
-
-    //  LÓGICA DE CARGA Y POBLADO DE FILTROS 
-
-    function handleFileLoad(e) {
-        const file = e.target.files[0];
-        if (!file) { resetUI(); return; }
-
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            try {
-                const data = new Uint8Array(e.target.result);
-                // raw: true es importante para evitar que xlsx intente inferir tipos demasiado rápido en valores como 1
-                const workbook = XLSX.read(data, {type: 'array', raw: true}); 
-                
-                globalAllLessonsData = {};
-                let validSheetsCount = 0;
-                
-                workbook.SheetNames.forEach(name => {
-                    const worksheet = workbook.Sheets[name];
-                    const sheetData = XLSX.utils.sheet_to_json(worksheet, {header: 1, raw: true, range: 0}); 
-                    
-                    if (sheetData.length > 1) { 
-                        globalAllLessonsData[name.trim()] = sheetData;
-                        validSheetsCount++;
-                    }
-                });
-
-                document.getElementById('initial-message').style.display = 'none';
-                document.getElementById('table-title').style.display = 'none';
-                
-                if (validSheetsCount > 0) {
-                    const lessonNames = Object.keys(globalAllLessonsData);
-                    populateLessonSelector(lessonNames);
-                } else {
-                    alert("⚠️ El archivo cargado no contiene hojas de cálculo válidas.");
-                    resetUI();
-                }
-
-            } catch (error) {
-                alert("⚠️ Error al procesar el archivo Excel. Asegúrese de que el formato sea correcto.");
-                console.error(error);
-                resetUI();
-                document.getElementById('initial-message').style.display = 'block';
-            }
-        };
-        reader.readAsArrayBuffer(file);
-    }
-
-    function resetUI() {
-        globalAllLessonsData = {};
-        
-        const lessonContainer = document.getElementById('lessonCheckboxesContainer');
-        const courseContainer = document.getElementById('courseCheckboxesContainer');
-        
-        // Reiniciar contenedor de lecciones
-        lessonContainer.innerHTML = `<div class="checkbox-item">
-                                        <input type="checkbox" id="selectAllLessons" onchange="toggleSelectAll('lessonCheckboxesContainer', 'lessonOption', this.checked)">
-                                        <label for="selectAllLessons">Seleccionar Todas</label>
-                                    </div>`;
-        setCheckboxContainerDisabled('lessonCheckboxesContainer', true);
-
-        // Reiniciar contenedor de cursos
-        courseContainer.innerHTML = `<div class="checkbox-item">
-                                        <input type="checkbox" id="selectAllCourses" onchange="toggleSelectAll('courseCheckboxesContainer', 'courseOption', this.checked)">
-                                        <label for="selectAllCourses">Seleccionar Todos</label>
-                                    </div>`;
-        setCheckboxContainerDisabled('courseCheckboxesContainer', true);
-
-        // Limpiar Contenido de Análisis
-        document.getElementById('lessonResultsContainer').innerHTML = ''; 
-        document.getElementById('table-title').style.display = 'none';
-
-        // Placeholder para Gráfico
-        const chartDiv = document.getElementById(`graficoContainer_Unified`);
-        chartDiv.innerHTML = '<p id="chart-placeholder" style="text-align: center; color: #777; margin-top: 100px;">Genera el análisis para ver el gráfico.</p>';
-        
-        // Placeholder para Refuerzo y Semáforo
-        const refuerzoList = document.getElementById('refuerzoList_Unified');
-        refuerzoList.innerHTML = '<p style="text-align: center; color: #777;">Genera el análisis para ver las recomendaciones.</p>';
-        const indicadoresContainer = document.getElementById('indicadoresContainer_Unified');
-        indicadoresContainer.innerHTML = '<h3>Resumen de Promedios por Subtema</h3>'; // Deja el título, limpia el resto.
-
-        // Placeholder para Estadísticas
-        document.getElementById('estadisticasContainer_Unified').innerHTML = '<h2>Detalle de Distribución de Calificaciones</h2><p style="text-align: center; color: #777; margin-top: 100px;">Genera el análisis para ver las estadísticas.</p>';
-        
-        document.getElementById('initial-message').style.display = 'block';
-    }
-
-    function populateLessonSelector(lessonNames) {
-        const container = document.getElementById('lessonCheckboxesContainer');
-        
-        let baseHtml = `<div class="checkbox-item">
-                            <input type="checkbox" id="selectAllLessons" onchange="toggleSelectAll('lessonCheckboxesContainer', 'lessonOption', this.checked)">
-                            <label for="selectAllLessons">Seleccionar Todas</label>
-                        </div>`;
-        container.innerHTML = baseHtml;
-        
-        if (lessonNames.length === 0) {
-            setCheckboxContainerDisabled('lessonCheckboxesContainer', true);
-            return;
-        }
-
-        lessonNames.forEach((name, index) => {
-            const div = document.createElement('div');
-            div.className = 'checkbox-item';
-            // Al cambiar la selección de lección, forzamos la actualización de cursos llamando a updateCourseSelector()
-            const onChangeAttr = `synchronizeSelectAll('lessonCheckboxesContainer', 'lessonOption');`; // updateCourseSelector() se llama dentro de synchronizeSelectAll
-            div.innerHTML = `<input type="checkbox" id="lesson-${index}" class="lessonOption" value="${name}" onchange="${onChangeAttr}">
-                             <label for="lesson-${index}">${name}</label>`;
-            container.appendChild(div);
-        });
-        
-        if (lessonNames.length > 0) {
-            // Seleccionar la primera lección por defecto y forzar la actualización de cursos
-            const firstLessonCheckbox = container.querySelector('.lessonOption');
-            if (firstLessonCheckbox) {
-                firstLessonCheckbox.checked = true;
-            }
-            synchronizeSelectAll('lessonCheckboxesContainer', 'lessonOption'); // Esto llama a updateCourseSelector()
-            setCheckboxContainerDisabled('lessonCheckboxesContainer', false);
-        }
-    }
-    
-    function updateCourseSelector() { 
-        // Obtenemos todas las lecciones seleccionadas.
-        const selectedLessons = getSelectedValues('lessonCheckboxesContainer', 'lessonOption');
-        populateCourseSelector(selectedLessons);
-    }
-    
-    function populateCourseSelector(lessonNames) {
-        const courseContainer = document.getElementById('courseCheckboxesContainer');
-        
-        let baseHtml = `<div class="checkbox-item">
-                            <input type="checkbox" id="selectAllCourses" onchange="toggleSelectAll('courseCheckboxesContainer', 'courseOption', this.checked)">
-                            <label for="selectAllCourses">Seleccionar Todos</label>
-                        </div>`;
-        courseContainer.innerHTML = baseHtml;
-        setCheckboxContainerDisabled('courseCheckboxesContainer', true);
-        
-        if (lessonNames.length === 0) {
-            return;
-        }
-
-        const allCourses = new Set();
-        
-        lessonNames.forEach(lessonName => {
-            if (!globalAllLessonsData[lessonName]) return;
-            
-            const tempRawData = JSON.parse(JSON.stringify(globalAllLessonsData[lessonName]));
-            
-            const detectionResult = detectAndCleanHeaders(tempRawData);
-            const cursoKey = detectionResult ? detectionResult.cursoKey : null;
-
-            if (!detectionResult || !cursoKey) {
-                return;
-            }
-            
-            const dataStartRowIndex = detectionResult.headerRowIndex + (detectionResult.isDoubleHeader ? 2 : 1);
-            const dataRows = tempRawData.slice(dataStartRowIndex);
-            const headerRow = tempRawData[detectionResult.headerRowIndex + (detectionResult.isDoubleHeader ? 1 : 0)];
-            const cursoIndex = headerRow.findIndex(h => h && h.toString().trim() === cursoKey);
-
-            if (cursoIndex === -1) return;
-
-            dataRows.forEach(row => {
-                const cursoValue = row[cursoIndex];
-                if (cursoValue) {
-                    const cursoTrimmed = cursoValue.toString().trim();
-                    if (cursoTrimmed.length > 0) allCourses.add(cursoTrimmed);
-                }
-            });
-        });
-
-        const cursos = Array.from(allCourses).sort(); 
-        
-        cursos.forEach((curso, index) => {
-            const div = document.createElement('div');
-            div.className = 'checkbox-item';
-            div.innerHTML = `<input type="checkbox" id="course-${index}" class="courseOption" value="${curso}" onchange="synchronizeSelectAll('courseCheckboxesContainer', 'courseOption')">
-                             <label for="course-${index}">${curso}</label>`;
-            courseContainer.appendChild(div);
-        });
-        
-        if (cursos.length > 0) {
-            toggleSelectAll('courseCheckboxesContainer', 'courseOption', true);
-            setCheckboxContainerDisabled('courseCheckboxesContainer', false);
-        }
-    }
-
-    //  FUNCIONES DE DETECCIÓN Y ANÁLISIS   
-
-    function findHeaderRowIndex(data) {
-        for (let i = 0; i < data.length; i++) {
-            const row = data[i].map(h => h ? h.toString().trim().toLowerCase() : '');
-            if (row.some(h => h.includes('cedula') || h.includes('nombre') || h.includes('curso') || h.includes('subtema'))) {
-                return i;
-            }
-        }
-        return -1;
-    }
-
-    function detectAndCleanHeaders(rawData) {
-        let analysisStructure = {
-            groupingStructure: {}, infoFields: [], groupingStructureKeys: [],
-            cursoKey: '', cedulaKey: '', nombreKey: '', notaKey: '',
-            headerRowIndex: -1, isDoubleHeader: false
-        };
-        
-        analysisStructure.headerRowIndex = findHeaderRowIndex(rawData);
-        if (analysisStructure.headerRowIndex === -1) return null;
-
-        const h1 = rawData[analysisStructure.headerRowIndex].map(h => h ? h.toString().trim() : '');
-        const h2 = (analysisStructure.headerRowIndex + 1 < rawData.length) ? rawData[analysisStructure.headerRowIndex + 1].map(h => h ? h.toString().trim() : '') : [];
-        
-        const hasPxInH2 = h2.some(h => h && h.startsWith('P') && !isNaN(parseInt(h.substring(1))));
-        if (hasPxInH2 && detectDoubleHeaderInternal(h1, h2, analysisStructure)) { 
-            analysisStructure.isDoubleHeader = true;
-            return analysisStructure;
-        }
-
-        if (detectSingleCompositeHeaderInternal(h1, analysisStructure)) { 
-            analysisStructure.isDoubleHeader = false;
-            return analysisStructure;
-        }
-        
-        return null;
-    }
-    
-    function detectDoubleHeaderInternal(h1, h2, analysisStructure) {
-        let currentSubtema = null;
-        let foundPKeys = false; 
-
-        for (let i = 0; i < Math.max(h1.length, h2.length); i++) {
-            const field1 = h1[i] || ''; 
-            const field2 = h2[i] || '';
-            const lower1 = field1.toLowerCase();
-            const lower2 = field2.toLowerCase();
-
-            const isInfoField = lower1.includes('cedula') || lower1.includes('nombre') || lower1.includes('curso') || lower1.includes('total') || lower1.includes('nota') ||
-                                lower2.includes('cedula') || lower2.includes('nombre') || lower2.includes('curso') || lower2.includes('total') || lower2.includes('nota');
-
-            if (isInfoField) {
-                const infoKey = field2 || field1;
-                if(infoKey) {
-                    const cleanedKey = infoKey.trim();
-                    if (!analysisStructure.infoFields.includes(cleanedKey)) { analysisStructure.infoFields.push(cleanedKey); }
-                    analysisStructure.groupingStructureKeys.push(cleanedKey);
-                    currentSubtema = null;
-                    
-                    if (lower1.includes('curso') || lower2.includes('curso')) analysisStructure.cursoKey = cleanedKey;
-                    if (lower1.includes('cedula') || lower2.includes('cedula')) analysisStructure.cedulaKey = cleanedKey;
-                    if (lower1.includes('nombre') || lower2.includes('nombre')) analysisStructure.nombreKey = cleanedKey;
-                    if (lower1.includes('total') || lower2.includes('total') || lower1.includes('nota') || lower2.includes('nota')) analysisStructure.notaKey = cleanedKey;
-                }
-                continue;
-            }
-
-            if (field2.startsWith('P') && !isNaN(parseInt(field2.substring(1)))) {
-                foundPKeys = true;
-                
-                if (field1 && field1 !== currentSubtema) {
-                    currentSubtema = field1; 
-                }
-                
-                const subtemaKey = currentSubtema || 'Subtema Sin Nombre';
-                if (!analysisStructure.groupingStructure[subtemaKey]) {
-                    analysisStructure.groupingStructure[subtemaKey] = { count: 0, questions: [] };
-                }
-                analysisStructure.groupingStructure[subtemaKey].questions.push({key: field2, code: field2});
-                analysisStructure.groupingStructureKeys.push(field2); 
-                analysisStructure.groupingStructure[subtemaKey].count++;
-            }
-        }
-        
-        return foundPKeys && !!analysisStructure.cursoKey;
-    }
-
-    function detectSingleCompositeHeaderInternal(h1, analysisStructure) {
-        const questionPattern = /(.+)\s*-\s*(P\d+)$/i; 
-        let foundPKeys = false;
-
-        for (const header of h1) {
-            if (!header) continue;
-            const match = header.match(questionPattern);
-            const lower = header.toLowerCase();
-
-            if (match) {
-                foundPKeys = true;
-                
-                const subtemaKey = match[1].trim();
-                const questionCode = match[2].trim();
-                
-                analysisStructure.groupingStructureKeys.push(header); 
-
-                if (!analysisStructure.groupingStructure[subtemaKey]) {
-                    analysisStructure.groupingStructure[subtemaKey] = { count: 0, questions: [] };
-                }
-                
-                analysisStructure.groupingStructure[subtemaKey].questions.push({
-                    key: header, 
-                    code: questionCode,
-                });
-                analysisStructure.groupingStructure[subtemaKey].count++;
-
-            } else {
-                analysisStructure.infoFields.push(header);
-                analysisStructure.groupingStructureKeys.push(header);
-
-                if (lower.includes('curso')) analysisStructure.cursoKey = header;
-                if (lower.includes('cedula')) analysisStructure.cedulaKey = header;
-                if (lower.includes('nombre')) analysisStructure.nombreKey = header;
-                if (lower.includes('total') || lower.includes('nota')) analysisStructure.notaKey = header;
-            }
-        }
-        
-        return foundPKeys && !!analysisStructure.cursoKey;
-    }
-
-    function analyzeData(studentData, structure) {
-        const { groupingStructure, cursoKey, cedulaKey, nombreKey } = structure;
-        
-        return studentData.map(student => {
-            let totalAciertos = 0;
-            student.rendimientos = {}; 
-
-            student.curso = cursoKey && student[cursoKey] ? student[cursoKey].toString().trim() : 'N/A';
-            student.cedula = cedulaKey && student[cedulaKey] ? student[cedulaKey].toString().trim() : 'N/A';
-            student.nombre = nombreKey && student[nombreKey] ? student[nombreKey].toString().trim() : 'N/A';
-            
-            for (const subtema in groupingStructure) {
-                const group = groupingStructure[subtema];
-                let subtemaAciertos = 0;
-                
-                group.questions.forEach(question => {
-                    const questionKey = question.key; 
-                    // Se considera 1 o '1' como acierto
-                    const acierto = student[questionKey] === 1 || student[questionKey] === '1' ? 1 : 0; 
-                    
-                    subtemaAciertos += acierto;
-                    totalAciertos += acierto;
-                    
-                    student[questionKey + '_result'] = acierto;
-                });
-
-                const subtemaCount = group.count;
-                // Rendimiento del subtema en escala 0-10
-                student.rendimientos[subtema] = subtemaCount > 0 
-                    ? (subtemaAciertos / subtemaCount * 10).toFixed(2)
-                    : 'N/A';
-            }
-            
-            student.totalAciertos = totalAciertos;
-            student.notaFinal = (totalAciertos * POINTS_PER_CORRECT).toFixed(2);
-            
-            return student;
-        }).filter(student => student.curso !== 'N/A' && student.nombre !== 'N/A');
-    }
-
-    function generateStatisticalAnalysis(allAnalyzedData, selectedCourses) {
-        
-        const indicadores = {}; // Key: Leccion|Subtema|Curso -> { promedio, count, leccion, subtema, curso }
-        const estadisticas = {}; // Key: Leccion|Subtema -> { Curso: { '0': count, ... '10': count } }
-        const graficoData = { 
-            cursos: selectedCourses, 
-            data: [] // { x: Leccion|Subtema, y: promedio, curso: curso, leccion: leccion, subtema: subtema, studentsCount: count }
-        };
-
-        const lessonSubtemaOrder = {}; 
-
-        allAnalyzedData.forEach(lessonResult => {
-            const lessonName = lessonResult.lessonName;
-            const students = lessonResult.analyzedData;
-            const groupingStructure = lessonResult.structure.groupingStructure;
-            
-            const subtemaOrder = determineSubtemaOrder(lessonResult.structure);
-            lessonSubtemaOrder[lessonName] = subtemaOrder;
-
-            selectedCourses.forEach(curso => {
-                const studentsInCourse = students.filter(s => s.curso === curso);
-                
-                subtemaOrder.forEach(subtema => {
-                    if (studentsInCourse.length === 0) return;
-
-                    const key = `${lessonName}|${subtema}`; 
-                    let totalSubtemaScore = 0;
-                    
-                    if (!estadisticas[key]) {
-                        estadisticas[key] = {};
-                    }
-                    if (!estadisticas[key][curso]) {
-                        estadisticas[key][curso] = {};
-                        for (let i = 0; i <= 10; i++) estadisticas[key][curso][i.toString()] = 0;
-                    }
-
-                    studentsInCourse.forEach(student => {
-                        const scoreStr = student.rendimientos[subtema];
-                        const score = scoreStr !== 'N/A' ? parseFloat(scoreStr) : NaN;
-                        if (isNaN(score)) return;
-
-                        totalSubtemaScore += score;
-                        
-                        const gradeBin = Math.min(10, Math.max(0, Math.floor(score))).toString(); 
-                        estadisticas[key][curso][gradeBin] += 1;
-                    });
-                    
-                    const average = studentsInCourse.length > 0 ? totalSubtemaScore / studentsInCourse.length : 0;
-                    const indicadorKey = `${key}|${curso}`;
-                    
-                    indicadores[indicadorKey] = {
-                        leccion: lessonName,
-                        subtema: subtema,
-                        curso: curso,
-                        promedio: average,
-                        count: studentsInCourse.length
-                    };
-                    
-                    graficoData.data.push({
-                        x: key, 
-                        y: average,
-                        curso: curso,
-                        leccion: lessonName,
-                        subtema: subtema,
-                        displayText: `${lessonName} - ${subtema}`,
-                        studentsCount: studentsInCourse.length 
-                    });
-                });
-            });
-        });
-        
-        const uniqueKeys = new Set();
-        const sortedLessonKeys = Object.keys(lessonSubtemaOrder).sort(); 
-        
-        sortedLessonKeys.forEach(lessonName => {
-            lessonSubtemaOrder[lessonName].forEach(subtema => {
-                uniqueKeys.add(`${lessonName}|${subtema}`);
-            });
-        });
-        
-        const unifiedOrder = Array.from(uniqueKeys);
-
-        const sortedIndicators = Object.values(indicadores).sort((a, b) => {
-            const keyA = `${a.leccion}|${a.subtema}`;
-            const keyB = `${b.leccion}|${b.subtema}`;
-            
-            const indexA = unifiedOrder.indexOf(keyA);
-            const indexB = unifiedOrder.indexOf(keyB);
-            
-            if (indexA !== indexB) return indexA - indexB; 
-            return a.curso.localeCompare(b.curso); 
-        });
-
-        return { sortedIndicators, estadisticas, graficoData, unifiedOrder };
-    }
-    
-    function determineSubtemaOrder(structure) {
-        if (structure.isDoubleHeader) {
-            const h1 = globalAllLessonsData[structure.leccionName][structure.headerRowIndex].map(h => h ? h.toString().trim() : '');
-            
-            const subtemaOrder = [];
-            let lastSubtema = null;
-            
-            for(let i = 0; i < h1.length; i++) {
-                const subtemaName = h1[i];
-                if (!subtemaName) continue;
-                
-                const lower = subtemaName.toLowerCase();
-                const isInfoField = lower.includes('cedula') || lower.includes('nombre') || lower.includes('curso') || lower.includes('total') || lower.includes('nota');
-                
-                if (!isInfoField && subtemaName !== lastSubtema) {
-                    if(structure.groupingStructure[subtemaName]) {
-                         subtemaOrder.push(subtemaName);
-                         lastSubtema = subtemaName;
-                    } else {
-                         lastSubtema = null; 
-                    }
-                }
-            }
-            return subtemaOrder;
-
-        } else {
-            const subtemaSet = new Set();
-            const orderedSubtemas = [];
-            
-            for (const key of structure.groupingStructureKeys) {
-                const match = key.match(/(.+)\s*-\s*(P\d+)$/i); 
-                if (match) {
-                    const subtemaName = match[1].trim();
-                    if (!subtemaSet.has(subtemaName)) {
-                        orderedSubtemas.push(subtemaName);
-                        subtemaSet.add(subtemaName);
-                    }
-                }
-            }
-            return orderedSubtemas;
-        }
-    }
-
-
-    //  FUNCIÓN PRINCIPAL ORCHESTRADORA  
-    
-    function analyzeSelectedLessons() {
-        const selectedLessons = getSelectedValues('lessonCheckboxesContainer', 'lessonOption');
-        const selectedCourses = getSelectedValues('courseCheckboxesContainer', 'courseOption'); 
-        const sampleTablesContainer = document.getElementById('lessonResultsContainer');
-        sampleTablesContainer.innerHTML = '';
-        document.getElementById('table-title').style.display = 'none';
-
-        if (selectedLessons.length === 0 || selectedCourses.length === 0) {
-            alert("Seleccione al menos una lección y un curso para analizar.");
-            return;
-        }
-        
-        let allAnalyzedData = []; 
-        let totalStudentsFiltered = 0;
-
-        selectedLessons.forEach((lessonName) => {
-            const rawData = JSON.parse(JSON.stringify(globalAllLessonsData[lessonName])); 
-            
-            const structure = detectAndCleanHeaders(rawData);
-            
-            if (!structure) {
-                sampleTablesContainer.innerHTML += `<div class="lesson-results-section"><h4 class="lesson-title-minor">${lessonName}</h4><p style="color: red; font-weight: bold;">⚠️ Error: No se pudo detectar la estructura de encabezados en esta lección. El análisis para esta hoja se ha omitido.</p></div>`;
-                return;
-            }
-            
-            structure.leccionName = lessonName;
-
-            const dataStartRowIndex = structure.headerRowIndex + (structure.isDoubleHeader ? 2 : 1);
-            const dataMappingHeaders = rawData[structure.headerRowIndex + (structure.isDoubleHeader ? 1 : 0)]; 
-            
-            const studentData = rawData.slice(dataStartRowIndex).map(row => {
-                const student = {};
-                row.forEach((value, index) => {
-                    const key = dataMappingHeaders[index];
-                    if (key) {
-                        const cleanKey = key.toString().trim();
-                        if (cleanKey && 
-                            (typeof value === 'number' || (typeof value === 'string' && !isNaN(parseFloat(value)) && parseFloat(value).toString().trim() === value.trim()))) {
-                            student[cleanKey] = parseFloat(value); 
-                        } else {
-                            student[cleanKey] = value;
-                        }
-                    }
-                });
-                return student;
-            });
-
-            const analyzedData = analyzeData(studentData, structure);
-            let filteredData = analyzedData.filter(student => selectedCourses.includes(student.curso));
-
-            if (filteredData.length > 0) {
-                allAnalyzedData.push({ lessonName, analyzedData: filteredData, structure });
-                totalStudentsFiltered += filteredData.length;
-                
-                renderResultsTable(lessonName, filteredData, structure.groupingStructure, structure); 
-            } else {
-                sampleTablesContainer.innerHTML += `<div class="lesson-results-section"><h4 class="lesson-title-minor">${lessonName}</h4><p>⚠️ No se encontraron estudiantes en los cursos seleccionados (${selectedCourses.join(', ')}) para esta lección.</p></div>`;
-            }
-        });
-        
-        if (allAnalyzedData.length === 0) {
-            document.getElementById('table-title').style.display = 'none';
-            alert("No se encontraron datos válidos en las lecciones/cursos seleccionados para realizar el análisis consolidado.");
-            resetUIAnalysisOnly(); // Limpia solo las secciones de resultados, no el panel de control.
-            return;
-        }
-
-        document.getElementById('table-title').style.display = 'block';
-
-        const analysisResults = generateStatisticalAnalysis(allAnalyzedData, selectedCourses);
-        
-        renderCharts_Unified(analysisResults.graficoData, analysisResults.unifiedOrder); 
-        renderRefuerzoIndicators_Unified(analysisResults.sortedIndicators); 
-        renderEstadisticas_Unified(analysisResults.estadisticas, selectedCourses, analysisResults.unifiedOrder); 
-    }
-    
-    // Función auxiliar para limpiar solo las secciones de análisis
-    function resetUIAnalysisOnly() {
-        const chartDiv = document.getElementById(`graficoContainer_Unified`);
-        chartDiv.innerHTML = '<p id="chart-placeholder" style="text-align: center; color: #777; margin-top: 100px;">Genera el análisis para ver el gráfico.</p>';
-        
-        const refuerzoList = document.getElementById('refuerzoList_Unified');
-        refuerzoList.innerHTML = '<p style="text-align: center; color: #777;">Genera el análisis para ver las recomendaciones.</p>';
-        const indicadoresContainer = document.getElementById('indicadoresContainer_Unified');
-        indicadoresContainer.innerHTML = '<h3>Resumen de Promedios por Subtema</h3>'; 
-        
-        document.getElementById('estadisticasContainer_Unified').innerHTML = '<h2>Detalle de Distribución de Calificaciones</h2><p style="text-align: center; color: #777; margin-top: 100px;">Genera el análisis para ver las estadísticas.</p>';
-    }
-
-    //  FUNCIONES DE RENDERIZADO PARA RESULTADOS CONSOLIDADOS 
-    
-    function renderResultsTable(lessonName, data, groupingStructure, structure) { 
-        const tableContainer = document.getElementById(`lessonResultsContainer`);
-        const sanitizedLessonName = lessonName.replace(/[^a-zA-Z0-9]/g, '_');
-        
-        let sectionHtml = `<div id="tableSection_${sanitizedLessonName}" class="lesson-results-section">
-                                <h4 class="lesson-title-minor">Lección: ${lessonName} (Estudiantes filtrados: ${data.length})</h4>
-                                <div id="tableContainer_${sanitizedLessonName}" class="results-table-container"></div>
-                            </div>`;
-        tableContainer.insertAdjacentHTML('beforeend', sectionHtml);
-
-        const currentTableContainer = document.getElementById(`tableContainer_${sanitizedLessonName}`);
-        
-        const subtemaColumns = determineSubtemaOrder(structure);
-
-        const totalSubtemaPromedioColumns = subtemaColumns.length;
-        const allQuestionsOrdered = subtemaColumns.flatMap(subtema => groupingStructure[subtema].questions);
-        const totalQuestionColumns = allQuestionsOrdered.length;
-        // Total columnas: Cédula, Nombre, Curso (3) + Preguntas (N) + Promedios Subtema (M) + Nota Final (1)
-        const totalColumns = 3 + totalQuestionColumns + totalSubtemaPromedioColumns + 1; // +1 de Nota Final
-        
-        let questionHeaderHtml = '';
-        let subtemaHeaderHtml = '';
-        let questionCodeHeaderHtml = '';
-        
-        subtemaColumns.forEach(subtema => {
-            const count = groupingStructure[subtema].count;
-            subtemaHeaderHtml += `<th class="subtema-header" colspan="${count}">${subtema}</th>`;
-            groupingStructure[subtema].questions.forEach(q => {
-                questionCodeHeaderHtml += `<th style="font-size: 0.7em;">${q.code}</th>`;
-            });
-            questionHeaderHtml += `<th class="promedio-subtema">${subtema}</th>`;
-        });
-        
-        const headerHtml = `<table>
-                            <tr>
-                                <th class="info-header" colspan="3">Información del Estudiante</th>
-                                <th class="leccion-header" colspan="${totalQuestionColumns}">Preguntas (1=Acierto)</th>
-                                <th class="leccion-header" colspan="${totalSubtemaPromedioColumns}">Promedio Subtema (0-10)</th>
-                                <th class="nota-final" rowspan="2">Nota Final</th>
-                            </tr>
-                            <tr>
-                                <th class="student-info" style="min-width: 60px;">Cédula</th>
-                                <th class="student-info" style="min-width: 80px;">Nombre</th>
-                                <th class="student-info" style="min-width: 40px;">Curso</th>
-                                ${subtemaHeaderHtml}
-                                ${subtemaColumns.map(subtema => `<th class="promedio-subtema" style="font-size: 0.7em;">Promedio</th>`).join('')}
-                            </tr>
-                            <tr>
-                                <th colspan="3"></th>
-                                ${questionCodeHeaderHtml}
-                                ${subtemaColumns.map(subtema => `<th class="promedio-subtema"></th>`).join('')}
-                                <th></th>
-                            </tr>`;
-                            
-        let bodyHtml = data.slice(0, 10).map(student => { 
-            let rowHtml = `<tr>
-                <td class="student-info">${student.cedula}</td>
-                <td class="student-info" style="text-align: left !important;">${student.nombre}</td>
-                <td class="student-info">${student.curso}</td>`;
-            
-            let promedioSubtemasHtml = '';
-
-            subtemaColumns.forEach(subtema => {
-                const group = groupingStructure[subtema];
-                group.questions.forEach(question => {
-                    const result = student[question.key + '_result'];
-                    const resultClass = result === 1 ? 'correct' : 'incorrect';
-                    rowHtml += `<td class="${resultClass}">${result}</td>`;
-                });
-                promedioSubtemasHtml += `<td class="promedio-subtema">${student.rendimientos[subtema]}</td>`;
-            });
-            
-            rowHtml += promedioSubtemasHtml;
-            rowHtml += `<td class="nota-final">${student.notaFinal}</td></tr>`;
-            return rowHtml;
-        }).join('');
-
-        // Usamos totalColumns para el colspan
-        if (data.length > 10) {
-             bodyHtml += `<tr><td colspan="${totalColumns}" style="text-align: center; font-style: italic;">... Se muestran las primeras 10 filas de ${data.length} estudiantes filtrados.</td></tr>`;
-        } else if (data.length === 0) {
-            bodyHtml = `<tr><td colspan="${totalColumns}" style="text-align: center;">No se encontraron estudiantes.</td></tr>`;
-        }
-
-        currentTableContainer.innerHTML = headerHtml + bodyHtml + '</table>'; 
-    }
-
-    function renderCharts_Unified(graficoData, unifiedOrder) { 
-        const chartDiv = document.getElementById(`graficoContainer_Unified`);
-        const tipoGrafico = document.getElementById('tipoGraficoSelector').value;
-        const traces = [];
-        
-        chartDiv.innerHTML = ''; // Limpiar el placeholder
-        
-        const displayKeys = unifiedOrder.map(key => key.replace('|', ' - '));
-        
-        const colors = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#7f7f7f', '#bcbd22', '#17becf']; 
-        let colorIndex = 0;
-
-        graficoData.cursos.forEach(curso => {
-            const courseData = graficoData.data.filter(d => d.curso === curso);
-            
-            const avgScores = unifiedOrder.map(key => {
-                const dataPoint = courseData.find(d => d.x === key);
-                return dataPoint ? dataPoint.y : 0; 
-            });
-
-            const hoverText = unifiedOrder.map(key => {
-                const dataPoint = courseData.find(d => d.x === key);
-                if (dataPoint) {
-                    return `<b>Lección:</b> ${dataPoint.leccion}<br>` +
-                           `<b>Subtema:</b> ${dataPoint.subtema}<br>` +
-                           `<b>Promedio:</b> ${dataPoint.y.toFixed(2)} / 10<br>` +
-                           `<b>Curso:</b> ${dataPoint.curso}<br>` +
-                           `<b>Estudiantes:</b> ${dataPoint.studentsCount}<extra></extra>`;
-                }
-                return `Sin datos para ${curso} en este subtema.<extra></extra>`;
-            });
-
-
-            const trace = {
-                x: displayKeys, 
-                y: avgScores,
-                name: `Curso: ${curso}`,
-                type: tipoGrafico === 'barras' ? 'bar' : 'scatter',
-                mode: tipoGrafico === 'tendencias' ? 'lines+markers' : undefined,
-                marker: { color: colors[colorIndex++ % colors.length] },
-                hovertemplate: hoverText,
-                hoverinfo: 'text' 
-            };
-            traces.push(trace);
-        });
-
-        const layout = {
-            title: `Comparativa de Promedios por Lección y Subtema`,
-            xaxis: { 
-                title: 'Lección - Subtema', 
-                tickangle: -45, 
-                automargin: true,
-                categoryorder: 'array',
-                categoryarray: displayKeys 
-            },
-            yaxis: { 
-                title: 'Promedio (0-10)', 
-                range: [0, 10] 
-            },
-            barmode: 'group',
-            height: 450, 
-            margin: { t: 30, b: 100, l: 30, r: 10 } 
-        };
-
-        Plotly.newPlot(chartDiv, traces, layout, {responsive: true});
-    }
-
-    /*FUNCIÓN COMBINADA para Refuerzo (Lista de Recomendaciones) y Semáforo (Barras de Progreso). */
-    
-    function renderRefuerzoIndicators_Unified(sortedIndicators) { 
-        // 1. Renderizar la lista de refuerzo 
-        const refuerzoContainer = document.getElementById(`refuerzoList_Unified`);
-        refuerzoContainer.innerHTML = '';
-        
-        if (sortedIndicators.length === 0) {
-            refuerzoContainer.innerHTML = '<p style="text-align: center;">No hay datos para generar el resumen de rendimiento grupal.</p>';
-        } else {
-            let cursoRefuerzoHtml = '<div class="estadistica-cursos-container">';
-
-            const groupedByCourse = sortedIndicators.reduce((acc, item) => {
-                const curso = item.curso;
-                if (!acc[curso]) acc[curso] = [];
-                acc[curso].push(item);
-            return acc;
-            }, {});
-        
-            Object.keys(groupedByCourse).sort().forEach(curso => {
-                const itemsInCourse = groupedByCourse[curso]; 
-            
-                const weakSubtemas = itemsInCourse.filter(item => item.promedio < REINFORCEMENT_THRESHOLD);
-                const adequateSubtemas = itemsInCourse.filter(item => item.promedio >= REINFORCEMENT_THRESHOLD);
-
-                cursoRefuerzoHtml += `<div class="estadistica-item refuerzo-box ${weakSubtemas.length > 0 ? 'necesita' : 'adecuado'}">`;
-                cursoRefuerzoHtml += `<h4>Curso: ${curso}</h4>`;
-            
-                if (weakSubtemas.length > 0) {
-                    cursoRefuerzoHtml += `<p style="font-weight: bold; color: #dc3545;">🚨 RENDIMIENTO BAJO (&lt; ${REINFORCEMENT_THRESHOLD.toFixed(1)}):</p><ul>`;
-                
-                    weakSubtemas.forEach(item => {
-                        cursoRefuerzoHtml += `<li>${item.leccion} - ${item.subtema} (${item.promedio.toFixed(2)}/10)</li>`;
-                    });
-                    cursoRefuerzoHtml += `</ul>`;
-                } else {
-                     cursoRefuerzoHtml += `<p style="color: green; font-weight: bold;">✅ RENDIMIENTO ADECUADO: Sin promedios grupales bajos.</p>`;
-                }
-
-                if (weakSubtemas.length > 0 && adequateSubtemas.length > 0) {
-                     cursoRefuerzoHtml += `<p style="font-weight: bold; color: #28a745; margin-top: 10px; border-top: 1px dashed #ccc; padding-top: 10px;">✅ ADECUADO:</p><ul>`;
-                     adequateSubtemas.forEach(item => {
-                        cursoRefuerzoHtml += `<li>${item.leccion} - ${item.subtema} (${item.promedio.toFixed(2)}/10)</li>`;
-                    });
-                    cursoRefuerzoHtml += `</ul>`;
-                }
-
-                cursoRefuerzoHtml += `</div>`;
-            });
-        
-            cursoRefuerzoHtml += '</div>';
-            refuerzoContainer.innerHTML = cursoRefuerzoHtml;
-        }
-
-
-        // 2. Renderizar los indicadores (Semáforo) 
-        const container = document.getElementById(`indicadoresContainer_Unified`);
-        container.innerHTML = '<h3>Resumen de Promedios por Subtema</h3>'; 
-        
-        if (sortedIndicators.length === 0) {
-            container.innerHTML += '<p style="text-align: center; color: #777;">No hay datos para generar el semáforo.</p>';
-            return;
-        }
-        
-        const groupedByLesson = sortedIndicators.reduce((acc, item) => {
-            const lessonKey = item.leccion;
-            if (!acc[lessonKey]) acc[lessonKey] = [];
-            acc[lessonKey].push(item);
-            return acc;
-        }, {});
-
-        const sortedLessonKeys = Object.keys(groupedByLesson).sort();
-        
-        sortedLessonKeys.forEach(lessonKey => {
-            const itemsInLesson = groupedByLesson[lessonKey];
-            
-            let lessonHtml = `<div class="lesson-group-semaphore">
-                                <h3>Lección: ${lessonKey}</h3>`;
-            
-            const subtemaOrder = Array.from(new Set(itemsInLesson.map(item => item.subtema)));
-            
-            subtemaOrder.forEach(subtemaKey => {
-                const itemsInSubtema = itemsInLesson.filter(item => item.subtema === subtemaKey);
-                
-                lessonHtml += `<h4 style="margin-top: 8px; margin-bottom: 3px; color: #444; font-size: 1.0em;">Subtema: ${subtemaKey}</h4>`;
-
-                itemsInSubtema.forEach(item => {
-                    const percentage = (item.promedio / 10) * 100;
-                    let colorClass = 'indicador-green';
-                    if (item.promedio < 7.0) colorClass = 'indicador-yellow';
-                    if (item.promedio < 5.0) colorClass = 'indicador-red';
-                    
-                    
-                    lessonHtml += `<div class="indicador ${colorClass}">
-                                <span class="indicador-label">Curso: ${item.curso} (${item.count}):</span>
-                                <div class="progress-bar-bg">
-                                    <div class="progress-bar ${colorClass}" style="width: ${percentage.toFixed(0)}%;">
-                                        ${item.promedio.toFixed(2)}
-                                    </div>
-                                </div>
-                            </div>`;
-                });
-            });
-
-            lessonHtml += `</div>`;
-            container.innerHTML += lessonHtml;
-        });
-    }
-
-    function renderEstadisticas_Unified(estadisticas, coursesToAnalyze, unifiedOrder) { 
-        const container = document.getElementById(`estadisticasContainer_Unified`);
-        let html = '<h2>Detalle de Distribución de Calificaciones</h2><div class="estadistica-cursos-container">';
-        
-        if (Object.keys(estadisticas).length === 0) {
-            container.innerHTML = '<h2>Detalle de Distribución de Calificaciones</h2><p style="text-align: center; color: #777; margin-top: 100px;">Genera el análisis para ver las estadísticas.</p>';
-            return;
-        }
-
-        unifiedOrder.forEach(key => { 
-            const [leccion, subtema] = key.split('|');
-            const distributionByCourse = estadisticas[key];
-            
-            if (!distributionByCourse) return;
-
-            html += `<div class="estadistica-item">
-                        <p style="font-size: 1.0em; font-weight: bold; color: #122b3d; border-bottom: 1px dotted #ccc; padding-bottom: 5px;">Distribución: ${leccion} - ${subtema}</p>`;
-            
-            coursesToAnalyze.forEach(curso => {
-                const distribution = distributionByCourse[curso];
-                if (!distribution) return;
-
-                const totalStudents = Object.values(distribution).reduce((a, b) => a + b, 0);
-                
-                html += `<h5 style="margin: 8px 0 3px; font-size: 0.9em;">Curso: ${curso} (Total: ${totalStudents})</h5><ul style="list-style: none; padding: 0; margin: 0;">`;
-                
-                for (let i = 0; i <= 10; i++) {
-                    const count = distribution[i.toString()] || 0;
-                    const percentage = totalStudents > 0 ? (count / totalStudents) * 100 : 0;
-                    
-                    html += `<li style="display: flex; justify-content: space-between; font-size: 0.75em; border-bottom: 1px solid #f0f0f0;">
-                                <span>Nota ${i}/10:</span>
-                                <span>${count} (${percentage.toFixed(1)}%)</span>
-                            </li>`;
-                }
-                html += '</ul>';
-            });
-            
-            html += `</div>`;
-        });
-        
-        html += '</div>';
-        container.innerHTML = html;
-    }
-</script>
 </body>
 </html>
