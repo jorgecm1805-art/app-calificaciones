@@ -8,19 +8,19 @@
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 
     <style>
-        /* ============================================== */
+       
         /* == ESTILOS GLOBALES Y DE DISEÑO == */
-        /* ============================================== */
         
         body { 	
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
             background-color: #FAEBD7; 
             padding: 20px; 
             margin: 0; 	
+            color: #000;
         }
         
         .main-container { 	
-            max-width: 1300px;
+            max-width: 2000px;
             margin: 0 auto; 
             padding: 0; 	
         }
@@ -64,18 +64,19 @@
 
         /* Botones de navegación */
         .nav-link { 	
-            padding: 8px 15px;
-            font-weight: 500; 	
-            border: 1px solid #ccc; 
-            border-radius: 4px;
+            padding: 15px 8px;
+            font-weight: 600; 	
+            font-size: 1.2em;
+            border: 1px solid #080808;
+            border-radius: 5px;
             cursor: pointer;
             text-decoration: none;
             display: inline-flex;
             align-items: center;
-            gap: 5px;
-            transition: background-color 0.2s;
+            gap: 8px;
+            transition: background-color 0.2s, box-shadow 0.2s;
             white-space: nowrap; 
-            margin-bottom: 20px; /* Separación del grid */
+            margin-bottom: 20px; 
         }
         
         .nav-link.cargar-btn {
@@ -113,11 +114,10 @@
             background-color: #218838;
         }
 
-        /* - */
-        /* ORGANIZACIÓN DEL PANEL DE CONTROL (AJUSTADO) */
-        /* - */
-        
-        /* Contenedor principal de filtros dentro de la tarjeta del grid */
+     
+        /* ORGANIZACIÓN DEL PANEL DE CONTROL */
+       
+        /* Contenedor principal de filtros */
         #control-panel-card h2 {
             font-size: 1.3em;
             margin-top: 0;
@@ -196,13 +196,13 @@
             width: 100%;
             display: flex;
             align-items: flex-end; 
-            padding-top: 10px; /* Menos padding */
+            padding-top: 10px; 
         }
 
         /* Estilos de Gráfico y Semáforo */
         .grafico-container { 	
             background-color: #ffffff;
-            border: 1px solid #122b3d; 
+            border: 1px solid #111111; 
             border-radius: 6px;
             padding: 5px; 
             margin-top: 10px; 
@@ -249,10 +249,10 @@
             padding-right: 5px;
         }
         
-        /* Asignación de colores de barra usando clases CSS */
+    
         .indicador-red .progress-bar {
             background-color: #f8061e; 
-            color: white;
+            color: rgb(20, 20, 20);
         }
 
         .indicador-yellow .progress-bar {
@@ -261,8 +261,8 @@
         }
 
         .indicador-green .progress-bar {
-            background-color: #0e8d2b; 
-            color: white;
+            background-color: #1cda48; 
+            color: rgb(19, 19, 19);
         }
         
         
@@ -279,9 +279,9 @@
             font-size: 0.85em;
         }
 
-        /* - */
-        /* == LAYOUT DE 4 PARTES IGUALES  == */
-        /* - */
+        
+        /* == LAYOUT DE 4 PARTES IGUALES 2x2  == */
+       
 
         .results-grid {
             display: grid;
@@ -386,11 +386,14 @@
 
 <div class="main-container">
 
-    <div class="header-actions">
+   <div class="header-container">
         <h1 class="main-title">Análisis de Evaluaciones</h1>
-        <a href="resultados" class="nav-link cargar-btn">
+        
+        <div class="header-actions">
+            <a href="resultados" class="nav-link cargar-btn">
             <i class="fas fa-list-alt"></i> Ir Actividades
         </a>
+        </div>
     </div>
     
     <div class="results-grid">
@@ -502,7 +505,7 @@
         document.head.appendChild(link);
     });
     
-    //  LÓGICA DE CHECKBOXES (SIN CAMBIOS ESTRUCTURALES) 
+    //  LÓGICA DE CHECKBOXES
 
     function setCheckboxContainerDisabled(containerId, disabled) {
         const container = document.getElementById(containerId);
@@ -679,7 +682,7 @@
         lessonNames.forEach((name, index) => {
             const div = document.createElement('div');
             div.className = 'checkbox-item';
-            // Al cambiar la selección de lección, forzamos la actualización de cursos llamando a updateCourseSelector()
+            // Al cambiar la selección de lección, se fuerza la actualización de cursos llamando a updateCourseSelector()
             const onChangeAttr = `synchronizeSelectAll('lessonCheckboxesContainer', 'lessonOption');`; // updateCourseSelector() se llama dentro de synchronizeSelectAll
             div.innerHTML = `<input type="checkbox" id="lesson-${index}" class="lessonOption" value="${name}" onchange="${onChangeAttr}">
                              <label for="lesson-${index}">${name}</label>`;
@@ -698,7 +701,7 @@
     }
     
     function updateCourseSelector() { 
-        // Obtenemos todas las lecciones seleccionadas.
+        // Se obtiene todas las lecciones seleccionadas.
         const selectedLessons = getSelectedValues('lessonCheckboxesContainer', 'lessonOption');
         populateCourseSelector(selectedLessons);
     }
@@ -1322,7 +1325,6 @@
     /*FUNCIÓN COMBINADA para Refuerzo (Lista de Recomendaciones) y Semáforo (Barras de Progreso). */
     
     function renderRefuerzoIndicators_Unified(sortedIndicators) { 
-        // 1. Renderizar la lista de refuerzo 
         const refuerzoContainer = document.getElementById(`refuerzoList_Unified`);
         refuerzoContainer.innerHTML = '';
         
@@ -1374,7 +1376,6 @@
         }
 
 
-        // 2. Renderizar los indicadores (Semáforo) 
         const container = document.getElementById(`indicadoresContainer_Unified`);
         container.innerHTML = '<h3>Resumen de Promedios por Subtema</h3>'; 
         
