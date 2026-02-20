@@ -8,9 +8,7 @@
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 
     <style>
-       
-        /* == ESTILOS GLOBALES Y DE DISEÑO == */
-        
+        /* == ESTILOS GLOBALES == */
         body { 	
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
             background-color: #FAEBD7; 
@@ -43,7 +41,6 @@
             font-weight: 600;
         }
 
-        /* Estilo base de Panel (Solo si no está dentro de .analysis-card) */
         .panel { 	
             background-color: #f7f7f7; 
             border: 1px solid #020202;
@@ -62,7 +59,6 @@
             border-bottom: 2px solid #0e0d0d;
         }
 
-        /* Botones de navegación */
         .nav-link { 	
             padding: 15px 8px;
             font-weight: 600; 	
@@ -85,12 +81,6 @@
             border-color: #070707;
         }
 
-        .nav-link:hover {
-            opacity: 0.9;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-
-        /* Botón de Acción */
         .submit-btn { 	
             width: 100%;
             height: 42px;
@@ -110,179 +100,7 @@
             margin-top: 10px;
         }
 
-        .submit-btn:hover {
-            background-color: #218838;
-        }
-
-     
-        /* ORGANIZACIÓN DEL PANEL DE CONTROL */
-       
-        /* Contenedor principal de filtros */
-        #control-panel-card h2 {
-            font-size: 1.3em;
-            margin-top: 0;
-            margin-bottom: 15px;
-            padding-bottom: 5px;
-            border-bottom: 1px solid #ccc;
-        }
-
-        .control-group-upload {
-            padding-bottom: 15px;
-            border-bottom: 1px solid #eee;
-            margin-bottom: 15px;
-        }
-
-        
-        .control-group-filters {
-            display: flex;
-            flex-direction: column; 
-            gap: 15px; 
-            align-items: stretch; 
-        }
-        
-        .upload-input-group {
-            width: 100%; 
-            display: flex; 
-            flex-direction: column;
-        }
-
-        .upload-input-group input[type="file"] {
-            padding: 8px; 
-            border: 1px solid #0a0a0a8e; 
-            border-radius: 4px;
-            background-color: white;
-            font-size: 0.9em; 
-        }
-
-        .filtro-grupo {
-            width: 100%; 
-            box-sizing: border-box;
-        }
-
-        .select-box select { 
-            width: 100%;
-            padding: 6px; 
-            border: 1px solid #0a0a0a8e;
-            border-radius: 4px;
-            background-color: white;
-            font-size: 0.9em; 
-            height: 38px; 
-            box-sizing: border-box;
-        }
-        
-        .checkbox-list-container {
-            border: 1px solid #0a0a0a8e;
-            border-radius: 4px;
-            background-color: white;
-            min-height: 38px; 
-            max-height: 100px; 
-            overflow-y: auto;
-            padding: 3px 8px; 
-        }
-
-        .checkbox-item {
-            font-size: 0.85em; 
-        }
-        
-        .filtro-grupo h3 { 	
-            color: #0e0d0d;
-            margin-top: 0; 	
-            margin-bottom: 3px; 		
-            font-size: 1.0em;
-            font-weight: 600; 	
-        }
-        
-        .btn-action-container {
-            width: 100%;
-            display: flex;
-            align-items: flex-end; 
-            padding-top: 10px; 
-        }
-
-        /* Estilos de Gráfico y Semáforo */
-        .grafico-container { 	
-            background-color: #ffffff;
-            border: 1px solid #111111; 
-            border-radius: 6px;
-            padding: 5px; 
-            margin-top: 10px; 
-        }
-        
-        .indicadores-container, .estadisticas { 	
-            margin-top: 0px; 	
-            padding-top: 0px;
-            border-top: none; 
-        }
-
-        /* Estilos para el agrupamiento por Lección en el Semáforo  */
-        .lesson-group-semaphore {
-            margin-bottom: 15px; 
-            padding: 10px;
-            border: 1px solid #646262;
-            border-radius: 6px;
-            background-color: #f0f8ff;
-        }
-
-        .lesson-group-semaphore h3 {
-            font-size: 1.1em; 
-            padding-bottom: 3px;
-        }
-        
-        .indicador { 	
-            margin-bottom: 5px; 
-            font-size: 0.75em; 
-        }
-        .indicador-label { 	
-            min-width: 100px; 
-        }
-        .progress-bar-bg { 	
-            height: 15px; 
-        }
-        
-        /* Estilo base de la barra de progreso */
-        .progress-bar { 
-            font-size: 0.65em;
-            line-height: 15px;
-            border: 1px solid black; 
-            box-sizing: border-box; 
-            text-align: right;
-            padding-right: 5px;
-        }
-        
-    
-        .indicador-red .progress-bar {
-            background-color: #f8061e; 
-            color: rgb(20, 20, 20);
-        }
-
-        .indicador-yellow .progress-bar {
-            background-color: #f1b605; 
-            color: black;
-        }
-
-        .indicador-green .progress-bar {
-            background-color: #1cda48; 
-            color: rgb(19, 19, 19);
-        }
-        
-        
-        /* Estilos específicos para el indicador de refuerzo GRUPAL */
-        .refuerzo-box {
-            padding: 8px;
-            margin-bottom: 5px;
-            font-size: 0.8em; 
-        }
-        .refuerzo-box h4 {
-            font-size: 0.9em;
-        }
-        .refuerzo-box ul {
-            font-size: 0.85em;
-        }
-
-        
-        /* == LAYOUT DE 4 PARTES IGUALES 2x2  == */
-       
-
+        /* == LAYOUT DE PANELES == */
         .results-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(48%, 1fr)); 
@@ -302,7 +120,7 @@
             max-height: 750px; 
         }
 
-        .analysis-card h2, .analysis-card .grafico-title {
+        .analysis-card h2 {
             font-size: 1.3em;
             margin-top: 0;
             margin-bottom: 10px;
@@ -310,74 +128,55 @@
             border-bottom: 1px solid #ccc;
         }
 
-        /* Estilo para el contenedor de refuerzo y semáforo  */
-        #indicators-refuerzo-card h2 {
-             font-size: 1.3em;
-             margin-top: 0;
-             margin-bottom: 10px;
-             padding-bottom: 5px;
-             border-bottom: 1px solid #ccc;
-        }
-        #indicators-refuerzo-card h3 {
-             font-size: 1.1em;
-             margin-top: 10px;
-        }
-        
-
-        .analysis-card .indicador { 	
-            font-size: 0.8em; 
-            margin-bottom: 3px;
-        }
-        .analysis-card .indicador-label { 	
-            min-width: 120px; 
-            font-weight: 500;
-        }
-
-        .analysis-card .estadistica-item { 
-            padding: 5px; 	
-            flex: 1 1 100%; 
-            max-width: 100%; 
-            font-size: 0.8em; 
-        }
-
-        #graficoContainer_Unified {
-            min-height: 500px; 
-            height: 500px; 
-        }
-
-        /* Sección de Tablas de Muestra */
-        .lesson-results-section {
-            border: 1px solid #ddd; 
-            border-radius: 8px;
-            padding: 15px;
+        /* Estilo para el panel de distribución que ahora está abajo */
+        .full-width-panel {
             margin-top: 20px;
-            background-color: #fff;
-            box-shadow: 0 0 5px rgba(0,0,0,0.05);
-            overflow-x: auto; 
-        }
-        
-        .results-table-container table {
-             width: 100%; 
-             border-collapse: collapse;
-             min-width: 1000px; 
+            background-color: #f7f7f7;
+            border: 1px solid #020202;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
         }
 
-        .results-table-container th, .results-table-container td {
-            font-size: 0.8em; 
-            padding: 6px 4px; 
+        /* == ELEMENTOS DE CONTROL Y FILTROS == */
+        .control-group-upload { padding-bottom: 15px; border-bottom: 1px solid #eee; margin-bottom: 15px; }
+        .control-group-filters { display: flex; flex-direction: column; gap: 15px; }
+        .upload-input-group { display: flex; flex-direction: column; }
+        .upload-input-group input[type="file"] { padding: 8px; border: 1px solid #0a0a0a8e; border-radius: 4px; background-color: white; }
+        .filtro-grupo { width: 100%; box-sizing: border-box; }
+        .filtro-grupo h3 { color: #0e0d0d; margin-bottom: 3px; font-size: 1.0em; font-weight: 600; }
+        .checkbox-list-container { border: 1px solid #0a0a0a8e; border-radius: 4px; background-color: white; max-height: 100px; overflow-y: auto; padding: 3px 8px; }
+        .select-box select { width: 100%; padding: 6px; border: 1px solid #0a0a0a8e; border-radius: 4px; height: 38px; }
+
+        /* == ESTILOS DE GRÁFICOS Y SEMÁFORO == */
+        .grafico-container { background-color: #ffffff; border: 1px solid #111111; border-radius: 6px; padding: 5px; margin-top: 10px; }
+        .lesson-group-semaphore { margin-bottom: 15px; padding: 10px; border: 1px solid #646262; border-radius: 6px; background-color: #f0f8ff; }
+        .indicador { margin-bottom: 5px; font-size: 0.75em; }
+        .progress-bar-bg { height: 15px; background-color: #e9ecef; border-radius: 4px; overflow: hidden; }
+        .progress-bar { font-size: 0.65em; line-height: 15px; border: 1px solid black; box-sizing: border-box; text-align: right; padding-right: 5px; height: 100%; }
+        .indicador-red .progress-bar { background-color: #f8061e; color: #fff; }
+        .indicador-yellow .progress-bar { background-color: #f1b605; color: #000; }
+        .indicador-green .progress-bar { background-color: #1cda48; color: #000; }
+        .refuerzo-box { padding: 8px; margin-bottom: 5px; font-size: 0.8em; border-radius: 5px; border: 1px solid #ccc; }
+
+        /* == TABLAS DE RESULTADOS == */
+        .results-table-container table { width: 100%; border-collapse: collapse; min-width: 1000px; }
+        .results-table-container th, .results-table-container td { font-size: 0.8em; padding: 6px 4px; border: 1px solid #ddd; text-align: center; }
+        .correct { background-color: #d4edda; }
+        .incorrect { background-color: #f8d7da; }
+
+        /* Contenedor flexible para las estadísticas */
+        .estadistica-cursos-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        .estadistica-item {
+            flex: 1 1 300px;
+            background: #fff;
+            padding: 10px;
             border: 1px solid #ddd;
-            text-align: center;
-        }
-        
-        .results-table-container .student-info {
-            min-width: 70px; 
-        }
-        .results-table-container .student-info:nth-child(2) {
-             min-width: 120px; 
-        }
-        .results-table-container .nota-final {
-             min-width: 60px; 
-             font-weight: bold;
+            border-radius: 5px;
         }
 
     </style>
@@ -386,13 +185,12 @@
 
 <div class="main-container">
 
-   <div class="header-container">
+    <div class="header-container">
         <h1 class="main-title">Análisis de Evaluaciones</h1>
-        
         <div class="header-actions">
             <a href="resultados" class="nav-link cargar-btn">
-            <i class="fas fa-list-alt"></i> Ir Actividades
-        </a>
+                <i class="fas fa-list-alt"></i> Ir Actividades
+            </a>
         </div>
     </div>
     
@@ -400,7 +198,6 @@
         
         <div id="control-panel-card" class="analysis-card">
             <h2>Menú de Control y Análisis</h2>
-        
             <div class="control-group-upload">
                 <div class="upload-input-group">
                     <h3>1. Subir Archivo de Evaluaciones (.xlsx)</h3>
@@ -409,7 +206,6 @@
             </div>
 
             <div class="control-group-filters">
-            
                 <div class="filtro-grupo">
                     <h3>2. Lección </h3>
                     <div id="lessonCheckboxesContainer" class="checkbox-list-container disabled">
@@ -443,54 +239,50 @@
                         <i class="fas fa-chart-bar"></i> Generar Análisis 
                     </button>
                 </div>
-
             </div>
         </div>
         
         <div id="chart-card" class="analysis-card">
             <h2 class="grafico-title">Gráfico de Rendimiento por Lección, Subtema y Curso</h2>
-            <div id="graficoContainer_Unified" class="grafico-container grid-item-content">
+            <div id="graficoContainer_Unified" class="grafico-container">
                  <p id="chart-placeholder" style="text-align: center; color: #777; margin-top: 100px;">Genera el análisis para ver el gráfico.</p>
             </div> 
         </div>
 
         <div id="indicators-refuerzo-card" class="analysis-card">
             <h2>Resumen y Refuerzo</h2>
-            <div id="refuerzoContainer_Unified" class="indicadores-container grid-item-content"> 
-                <h3>Rendimiento Grupal y Recomendaciones de Refuerzo</h3>
+            <div id="refuerzoContainer_Unified" class="indicadores-container"> 
+                <h3>Rendimiento Grupal y Recomendaciones</h3>
                 <div id="refuerzoList_Unified">
                     <p style="text-align: center; color: #777;">Genera el análisis para ver las recomendaciones.</p>
                 </div>
             </div>
-            
-            <hr style="border: 0; border-top: 1px dashed #ccc; margin: 10px 0;">
-
-            <div id="indicadoresContainer_Unified" class="indicadores-container grid-item-content">
-                <h3>Resumen de Promedios por Subtema</h3>
-            </div>
         </div>
 
-        <div id="estadisticas-card" class="analysis-card">
-            <div id="estadisticasContainer_Unified" class="estadisticas grid-item-content">
-                <h2>Detalle de Distribución de Calificaciones</h2>
-                <p style="text-align: center; color: #777; margin-top: 100px;">Genera el análisis para ver las estadísticas.</p>
+        <div id="semaforo-card" class="analysis-card">
+            <h2>Resumen de Promedios por Subtema</h2>
+            <div id="indicadoresContainer_Unified" class="indicadores-container">
+                <p style="text-align: center; color: #777; margin-top: 100px;">Genera el análisis para ver los promedios grupales.</p>
             </div>
         </div>
         
+    </div> <div id="distribution-full-panel" class="full-width-panel">
+        <div id="estadisticasContainer_Unified" class="estadisticas">
+            <h2>Detalle de Distribución de Calificaciones</h2>
+            <p style="text-align: center; color: #777; padding: 20px;">Genera el análisis para ver el desglose por notas.</p>
+        </div>
     </div>
+
     <div id="table-results-wrapper">
          <hr style="border: 0; border-top: 3px solid #122b3d; margin: 40px 0;">
          <h3 id="table-title" style="display: none;">Tablas de Notas por Lección (Muestra de 10 Estudiantes)</h3>
          <div id="lessonResultsContainer">
              <div id="initial-message" class="panel" style="text-align: center; color: #555;">
                 <i class="fas fa-database fa-3x" style="margin-bottom: 15px; color: #020202;"></i>
-                <p>Suba un archivo de evaluación que contenga una o varias hojas (lecciones) para comenzar el análisis.</p>
-                <p style="font-weight: bold;">Nota: La nota final se calcula en base a 20 preguntas donde cada acierto equivale a 0.5 puntos.</p>
+                <p>Suba un archivo de evaluación para comenzar el análisis.</p>
             </div>
          </div>
     </div>
-
-
 </div>
 
 <script>
